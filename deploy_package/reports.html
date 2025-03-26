@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - ERP System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>ERP System</h1>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+                <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li>
+                <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                <li><a href="purchase-orders.html"><i class="fas fa-file-invoice"></i> Purchase Orders</a></li>
+                <li class="active"><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li class="sidebar-logout"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="user-info">
+                    <span id="username">Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="page-header">
+                    <h1>Reports</h1>
+                </div>
+
+                <div class="content-wrapper">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Available Reports</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="reports-grid">
+                                <div class="report-card" onclick="generateReport('sales')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Sales Report</h4>
+                                        <p>View sales performance over time</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="report-card" onclick="generateReport('inventory')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-boxes"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Inventory Report</h4>
+                                        <p>Current stock levels and valuation</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="report-card" onclick="generateReport('clients')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Client Report</h4>
+                                        <p>Client activity and purchase history</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="report-card" onclick="generateReport('suppliers')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Supplier Report</h4>
+                                        <p>Supplier performance and order history</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="report-card" onclick="generateReport('lowstock')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Low Stock Report</h4>
+                                        <p>Products with low stock levels</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="report-card" onclick="generateReport('financial')">
+                                    <div class="report-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Financial Report</h4>
+                                        <p>Revenue, expenses, and profit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="report-result" class="widget" style="display: none;">
+                        <div class="widget-header">
+                            <h3 id="report-title">Report Results</h3>
+                            <button id="export-pdf" class="btn primary-btn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                        </div>
+                        <div class="widget-content">
+                            <div id="report-content">
+                                <!-- Report content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Filter Modal -->
+    <div id="report-filter-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="filter-title">Report Filters</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="report-filter-form">
+                    <div class="form-group">
+                        <label for="date-range">Date Range</label>
+                        <select id="date-range">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    
+                    <div id="custom-date-range" style="display: none;">
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <input type="date" id="start-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">End Date</label>
+                            <input type="date" id="end-date">
+                        </div>
+                    </div>
+                    
+                    <div id="additional-filters">
+                        <!-- Additional filters will be added here based on report type -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                <button type="button" id="apply-filters" class="btn primary-btn">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

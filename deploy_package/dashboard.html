@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>ERP System</h1>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+                <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li>
+                <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                <li><a href="purchase-orders.html"><i class="fas fa-file-invoice"></i> Purchase Orders</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li class="sidebar-logout"><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="user-info">
+                    <span id="username">Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="dashboard-cards">
+                    <div class="card card-blue">
+                        <div class="card-body">
+                            <h3>Total Products</h3>
+                            <div class="card-value" id="totalProducts">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="card card-orange">
+                        <div class="card-body">
+                            <h3>Low Stock Items</h3>
+                            <div class="card-value" id="lowStockItems">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="card card-green">
+                        <div class="card-body">
+                            <h3>Active Suppliers</h3>
+                            <div class="card-value" id="activeSuppliers">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="card card-blue-light">
+                        <div class="card-body">
+                            <h3>Recent Sales</h3>
+                            <div class="card-value" id="recentSales">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="content-wrapper">
+                    <div class="dashboard-tables">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <h3>Low Stock Alerts</h3>
+                                <a href="inventory.html" class="btn primary-btn">View All</a>
+                            </div>
+                            <div class="widget-content">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Current Stock</th>
+                                            <th>Min Level</th>
+                                            <th>Suggested Supplier</th>
+                                            <th>Best Price</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lowStockTable">
+                                        <!-- Low stock items will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                
+                        <div class="widget">
+                            <div class="widget-header">
+                                <h3>Recent Sales</h3>
+                                <a href="sales.html" class="btn primary-btn">View All</a>
+                            </div>
+                            <div class="widget-content">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Client</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentSalesTable">
+                                        <!-- Recent sales will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/common.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
