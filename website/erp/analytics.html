@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Analytics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <h1>ERP System</h1>
+            </div>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="inventory.html">Inventory</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="suppliers.html">Suppliers</a></li>
+                <li><a href="purchase-orders.html">Customer Orders</a></li>
+                <li><a href="supplier-orders.html">Supplier Orders</a></li>
+                <li><a href="billing.html">Billing</a></li>
+                <li><a href="analytics.html" class="active">Analytics</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <h2>Analytics Dashboard</h2>
+            
+            <div class="analytics-container">
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3>Inventory Value</h3>
+                        <div class="analytics-value" id="inventory-value">$0.00</div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Total Sales</h3>
+                        <div class="analytics-value" id="total-sales">$0.00</div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Total Purchases</h3>
+                        <div class="analytics-value" id="total-purchases">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="analytics-row">
+                    <div class="analytics-chart-container">
+                        <h3>Sales vs Purchases</h3>
+                        <canvas id="sales-purchases-chart"></canvas>
+                    </div>
+                    <div class="analytics-chart-container">
+                        <h3>Top Selling Products</h3>
+                        <canvas id="top-products-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="analytics-row">
+                    <div class="analytics-chart-container">
+                        <h3>Monthly Revenue</h3>
+                        <canvas id="monthly-revenue-chart"></canvas>
+                    </div>
+                    <div class="analytics-chart-container">
+                        <h3>Stock Level by Product</h3>
+                        <canvas id="stock-level-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="analytics-row">
+                    <div class="analytics-table-container">
+                        <h3>Financial Summary</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="financial-summary-table">
+                                <!-- Financial data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
