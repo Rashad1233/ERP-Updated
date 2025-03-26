@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Low Stock Report</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-cubes"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-dolly-flatbed"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-calculator"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1><i class="fas fa-exclamation-triangle"></i> Low Stock Report</h1>
+                <p>Items below or approaching minimum stock levels</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu show">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li class="active"><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Stats Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>12</h3>
+                    <p>Out of Stock Items</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>28</h3>
+                    <p>Items Below Minimum</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>15</h3>
+                    <p>Items On Order</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>350</h3>
+                    <p>Normal Stock Items</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-filter"></i> Filters</h2>
+                <button class="btn-default"><i class="fas fa-redo"></i> Reset</button>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory">
+                            <option value="">All Categories</option>
+                            <option value="metals">Metals</option>
+                            <option value="plastics">Plastics</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="chemicals">Chemicals</option>
+                            <option value="tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stockStatus">Stock Status</label>
+                        <select id="stockStatus">
+                            <option value="all" selected>All Low Stock</option>
+                            <option value="outOfStock">Out of Stock</option>
+                            <option value="belowMinimum">Below Minimum</option>
+                            <option value="approaching">Approaching Minimum</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Warehouse</label>
+                        <select id="location">
+                            <option value="">All Warehouses</option>
+                            <option value="main" selected>Main Warehouse</option>
+                            <option value="secondary">Secondary Warehouse</option>
+                            <option value="production">Production Warehouse</option>
+                            <option value="shipping">Shipping Area</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderstatus">Order Status</label>
+                        <select id="orderstatus">
+                            <option value="all">All</option>
+                            <option value="ordered" selected>On Order</option>
+                            <option value="notOrdered">Not Ordered</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchProduct">Search Item</label>
+                        <div class="search-container">
+                            <input type="text" id="searchProduct" placeholder="Enter product name or SKU...">
+                            <button class="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sortBy">Sort By</label>
+                        <select id="sortBy">
+                            <option value="criticalFirst" selected>Most Critical First</option>
+                            <option value="alphabetical">Name (A-Z)</option>
+                            <option value="category">Category</option>
+                            <option value="stockLevel">Stock Level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-primary"><i class="fas fa-search"></i> Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-tasks"></i> Quick Actions</h2>
+            </div>
+            <div class="card-body">
+                <div class="quick-actions">
+                    <button class="btn-primary"><i class="fas fa-shopping-cart"></i> Create Purchase Requisition</button>
+                    <button class="btn-success"><i class="fas fa-paper-plane"></i> Send Purchase Orders</button>
+                    <button class="btn-warning"><i class="fas fa-bell"></i> Send Alerts to Managers</button>
+                    <button class="btn-default"><i class="fas fa-cog"></i> Adjust Minimum Levels</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Items Table -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Low Stock Items</h2>
+                <button class="btn-default"><i class="fas fa-download"></i> Download CSV</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Status</th>
+                                <th>Item</th>
+                                <th>SKU</th>
+                                <th>Category</th>
+                                <th>Current Stock</th>
+                                <th>Minimum</th>
+                                <th>On Order</th>
+                                <th>ETA</th>
+                                <th>Lead Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="danger-row">
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-red">Out of Stock</span></td>
+                                <td>Control Plate CP-200</td>
+                                <td>CP-200</td>
+                                <td>Electronics</td>
+                                <td>0</td>
+                                <td>25</td>
+                                <td>50</td>
+                                <td>05.11.2023</td>
+                                <td>14 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="danger-row">
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-red">Out of Stock</span></td>
+                                <td>Mounting Bracket MB-150</td>
+                                <td>MB-150</td>
+                                <td>Metal Parts</td>
+                                <td>0</td>
+                                <td>30</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>7 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-yellow">Below Minimum</span></td>
+                                <td>SKF 6205 Bearings</td>
+                                <td>BR-6205</td>
+                                <td>Components</td>
+                                <td>5</td>
+                                <td>25</td>
+                                <td>100</td>
+                                <td>01.11.2023</td>
+                                <td>10 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-yellow">Below Minimum</span></td>
+                                <td>Copper Wire C101</td>
+                                <td>CU-C101</td>
+                                <td>Metals</td>
+                                <td>20</td>
+                                <td>50</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>5 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-yellow">Below Minimum</span></td>
+                                <td>Power Supply PS-500</td>
+                                <td>PS-500</td>
+                                <td>Electronics</td>
+                                <td>8</td>
+                                <td>15</td>
+                                <td>20</td>
+                                <td>03.11.2023</td>
+                                <td>21 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-blue">Approaching</span></td>
+                                <td>Plastic Housing PH-300</td>
+                                <td>PH-300</td>
+                                <td>Plastics</td>
+                                <td>35</td>
+                                <td>30</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>4 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><span class="badge badge-blue">Approaching</span></td>
+                                <td>Insulating Tape IT-200</td>
+                                <td>IT-200</td>
+                                <td>Consumables</td>
+                                <td>12</td>
+                                <td>10</td>
+                                <td>50</td>
+                                <td>29.10.2023</td>
+                                <td>3 days</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Order"><i class="fas fa-cart-plus"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="11">
+                                    <div class="pagination">
+                                        <span>Page 1 of 4</span>
+                                        <div class="pagination-controls">
+                                            <button disabled><i class="fas fa-chevron-left"></i></button>
+                                            <button class="active">1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button><i class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Analysis -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-pie"></i> Low Stock by Category</h3>
+                <div class="chart-content">
+                    <canvas id="lowStockCategoryChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-line"></i> Restocking Timeline</h3>
+                <div class="chart-content">
+                    <canvas id="restockingTimelineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение библиотеки Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('collapsed');
+            });
+
+            // Select all checkbox functionality
+            document.getElementById('select-all').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // Initialize Charts
+            initializeLowStockCategoryChart();
+            initializeRestockingTimelineChart();
+        });
+
+        function initializeLowStockCategoryChart() {
+            const ctx = document.getElementById('lowStockCategoryChart').getContext('2d');
+            const lowStockCategoryChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Electronics', 'Metal Parts', 'Components', 'Metals', 'Plastics', 'Consumables'],
+                    datasets: [{
+                        label: 'Low Stock Items by Category',
+                        data: [12, 8, 9, 5, 3, 3],
+                        backgroundColor: [
+                            '#4285f4', // Google Blue
+                            '#34a853', // Google Green
+                            '#fbbc05', // Google Yellow
+                            '#ea4335', // Google Red
+                            '#673ab7',  // Purple
+                            '#3f51b5'   // Indigo
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeRestockingTimelineChart() {
+            const ctx = document.getElementById('restockingTimelineChart').getContext('2d');
+            const restockingTimelineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5+'],
+                    datasets: [{
+                        label: 'Items Arriving',
+                        data: [5, 12, 7, 3, 2],
+                        backgroundColor: '#4285f4'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Items'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Expected Arrival'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

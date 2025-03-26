@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Inventory Reservations</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-cubes"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li class="active"><a href="inventory-reservations.html"><i class="fas fa-dolly-flatbed"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-calculator"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <!-- Reports button is temporarily hidden -->
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Reservations & Orders</h1>
+                <p>Manage reserved stock and pending orders</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Reservations Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>42</h3>
+                    <p>Active Reservations</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>18</h3>
+                    <p>Confirmed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>24</h3>
+                    <p>Awaiting Confirmation</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>5</h3>
+                    <p>Require Attention</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-filter"></i> Filters</h2>
+                <button class="btn-default"><i class="fas fa-redo"></i> Reset</button>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reservationSource">Source</label>
+                        <select id="reservationSource">
+                            <option value="">All sources</option>
+                            <option value="sales" selected>Customer Orders</option>
+                            <option value="production">Production</option>
+                            <option value="internal">Internal Use</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationStatus">Status</label>
+                        <select id="reservationStatus">
+                            <option value="">All statuses</option>
+                            <option value="pending" selected>Awaiting Confirmation</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="fulfilled">Fulfilled</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateRange">Period</label>
+                        <select id="dateRange">
+                            <option value="today">Today</option>
+                            <option value="week" selected>This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="custom">Custom Period</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Warehouse</label>
+                        <select id="location">
+                            <option value="">All warehouses</option>
+                            <option value="main" selected>Main Warehouse</option>
+                            <option value="secondary">Secondary Warehouse</option>
+                            <option value="production">Production Warehouse</option>
+                            <option value="shipping">Shipping Area</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchQuery">Search</label>
+                        <div class="search-container">
+                            <input type="text" id="searchQuery" placeholder="Search by number, product or client...">
+                            <button class="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="criticalOnly" class="checkbox-label">
+                            <input type="checkbox" id="criticalOnly">
+                            <span>Critical only</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-primary"><i class="fas fa-search"></i> Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservations List -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-shopping-cart"></i> Active Reservations</h2>
+                <div class="header-actions">
+                    <button class="btn-add"><i class="fas fa-plus"></i> Create Reservation</button>
+                    <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Number</th>
+                                <th>Creation Date</th>
+                                <th>Source</th>
+                                <th>Status</th>
+                                <th>Expiry Date</th>
+                                <th>Products</th>
+                                <th>Warehouse</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><a href="#">RES-2023-0128</a></td>
+                                <td>23.10.2023</td>
+                                <td>Order SO-2023-0192</td>
+                                <td><span class="badge badge-yellow">Pending</span></td>
+                                <td>30.10.2023</td>
+                                <td>3 items</td>
+                                <td>Main Warehouse</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-check" title="Confirm"><i class="fas fa-check-circle"></i></button>
+                                        <button class="btn-action btn-delete" title="Cancel"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><a href="#">RES-2023-0127</a></td>
+                                <td>22.10.2023</td>
+                                <td>Order SO-2023-0191</td>
+                                <td><span class="badge badge-green">Confirmed</span></td>
+                                <td>29.10.2023</td>
+                                <td>2 items</td>
+                                <td>Main Warehouse</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Issue"><i class="fas fa-truck-loading"></i></button>
+                                        <button class="btn-action btn-delete" title="Cancel"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td><input type="checkbox"></td>
+                                <td><a href="#">RES-2023-0126</a></td>
+                                <td>21.10.2023</td>
+                                <td>Production PR-2023-0058</td>
+                                <td><span class="badge badge-yellow">Pending</span></td>
+                                <td>28.10.2023</td>
+                                <td>5 items</td>
+                                <td>Production Warehouse</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-check" title="Confirm"><i class="fas fa-check-circle"></i></button>
+                                        <button class="btn-action btn-delete" title="Cancel"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><a href="#">RES-2023-0125</a></td>
+                                <td>20.10.2023</td>
+                                <td>Order SO-2023-0187</td>
+                                <td><span class="badge badge-green">Confirmed</span></td>
+                                <td>27.10.2023</td>
+                                <td>1 item</td>
+                                <td>Main Warehouse</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-issue" title="Issue"><i class="fas fa-truck-loading"></i></button>
+                                        <button class="btn-action btn-delete" title="Cancel"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td><input type="checkbox"></td>
+                                <td><a href="#">RES-2023-0124</a></td>
+                                <td>19.10.2023</td>
+                                <td>Internal IN-2023-0045</td>
+                                <td><span class="badge badge-yellow">Pending</span></td>
+                                <td>26.10.2023</td>
+                                <td>4 items</td>
+                                <td>Secondary Warehouse</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-action btn-check" title="Confirm"><i class="fas fa-check-circle"></i></button>
+                                        <button class="btn-action btn-delete" title="Cancel"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="pagination">
+                                        <span>Page 1 of 5</span>
+                                        <div class="pagination-controls">
+                                            <button disabled><i class="fas fa-chevron-left"></i></button>
+                                            <button class="active">1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button><i class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reserved Items Summary -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-dolly-flatbed"></i> Reserved Items Summary</h2>
+                <div class="header-actions">
+                    <button class="btn-default"><i class="fas fa-chart-bar"></i> Detailed Analytics</button>
+                    <div class="dropdown">
+                        <button class="btn-default dropdown-toggle">
+                            <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content reports-menu">
+                            <div class="reports-menu-header">
+                                <h3>Available Reports</h3>
+                                <span>Select a report to view</span>
+                            </div>
+                            <div class="reports-menu-items">
+                                <a href="inventory-report-history.html" class="report-item">
+                                    <div class="report-icon blue">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Stock Level History</h4>
+                                        <span>Historical stock levels analysis</span>
+                                    </div>
+                                </a>
+                                <a href="inventory-report-valuation.html" class="report-item">
+                                    <div class="report-icon green">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Inventory Valuation</h4>
+                                        <span>Financial valuation of stock</span>
+                                    </div>
+                                </a>
+                                <a href="inventory-report-movement.html" class="report-item">
+                                    <div class="report-icon purple">
+                                        <i class="fas fa-random"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Movement Analysis</h4>
+                                        <span>Stock ins/outs movement patterns</span>
+                                    </div>
+                                </a>
+                                <a href="inventory-report-lowstock.html" class="report-item">
+                                    <div class="report-icon yellow">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Low Stock Report</h4>
+                                        <span>Items below minimum threshold</span>
+                                    </div>
+                                </a>
+                                <a href="inventory-report-expiry.html" class="report-item">
+                                    <div class="report-icon red">
+                                        <i class="fas fa-calendar-times"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Expiry Report</h4>
+                                        <span>Items nearing expiration date</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Report Widgets -->
+                <div class="report-widgets">
+                    <div class="report-widget">
+                        <div class="widget-header">
+                            <h3><i class="fas fa-chart-line"></i> Stock Level History</h3>
+                            <a href="inventory-report-history.html" class="widget-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="mini-chart">
+                                <canvas id="historyChart" width="100%" height="100%"></canvas>
+                                <div class="chart-loading" id="historyChartLoading">
+                                    <i class="fas fa-chart-line fa-3x"></i>
+                                    <p>Loading chart...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-widget">
+                        <div class="widget-header">
+                            <h3><i class="fas fa-coins"></i> Inventory Valuation</h3>
+                            <a href="inventory-report-valuation.html" class="widget-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="mini-chart">
+                                <canvas id="valuationChart" width="100%" height="100%"></canvas>
+                                <div class="chart-loading" id="valuationChartLoading">
+                                    <i class="fas fa-chart-bar fa-3x"></i>
+                                    <p>Loading chart...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-widget">
+                        <div class="widget-header">
+                            <h3><i class="fas fa-random"></i> Movement Analysis</h3>
+                            <a href="inventory-report-movement.html" class="widget-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="mini-chart">
+                                <canvas id="movementChart" width="100%" height="100%"></canvas>
+                                <div class="chart-loading" id="movementChartLoading">
+                                    <i class="fas fa-random fa-3x"></i>
+                                    <p>Loading chart...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-widget">
+                        <div class="widget-header">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Low Stock Alert</h3>
+                            <a href="inventory-report-lowstock.html" class="widget-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="alert-count">
+                                <span class="large-number">5</span>
+                                <span class="alert-label">Items below minimum</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-widget">
+                        <div class="widget-header">
+                            <h3><i class="fas fa-calendar-times"></i> Expiry Report</h3>
+                            <a href="inventory-report-expiry.html" class="widget-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="alert-count">
+                                <span class="large-number">3</span>
+                                <span class="alert-label">Items expiring soon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-box">
+                        <h3><i class="fas fa-chart-pie"></i> Reserved Items by Category</h3>
+                        <div class="chart-content">
+                            <canvas id="categoryChart" width="100%" height="250"></canvas>
+                            <div class="chart-loading" id="categoryChartLoading">
+                                <i class="fas fa-chart-pie fa-3x"></i>
+                                <p>Loading chart...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-box">
+                        <h3><i class="fas fa-chart-bar"></i> Reservations by Source</h3>
+                        <div class="chart-content">
+                            <canvas id="sourceChart" width="100%" height="250"></canvas>
+                            <div class="chart-loading" id="sourceChartLoading">
+                                <i class="fas fa-chart-bar fa-3x"></i>
+                                <p>Loading chart...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>UoM</th>
+                                <th>Total in Stock</th>
+                                <th>Reserved</th>
+                                <th>Available</th>
+                                <th>Expected Receipt</th>
+                                <th>Warehouses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aluminum Profile A1001</td>
+                                <td>pcs</td>
+                                <td>250</td>
+                                <td>120</td>
+                                <td>130</td>
+                                <td>200 (27.10.2023)</td>
+                                <td>Main</td>
+                            </tr>
+                            <tr class="warning-row">
+                                <td>Hardware M100-2</td>
+                                <td>kg</td>
+                                <td>500</td>
+                                <td>450</td>
+                                <td>50</td>
+                                <td>300 (29.10.2023)</td>
+                                <td>Main, Production</td>
+                            </tr>
+                            <tr>
+                                <td>Sheet Steel S355</td>
+                                <td>kg</td>
+                                <td>750</td>
+                                <td>200</td>
+                                <td>550</td>
+                                <td>0</td>
+                                <td>Main</td>
+                            </tr>
+                            <tr class="danger-row">
+                                <td>Bearings SKF 6205</td>
+                                <td>pcs</td>
+                                <td>120</td>
+                                <td>115</td>
+                                <td>5</td>
+                                <td>100 (01.11.2023)</td>
+                                <td>Main, Secondary</td>
+                            </tr>
+                            <tr>
+                                <td>Plastic Packaging P-1000</td>
+                                <td>pcs</td>
+                                <td>300</td>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>0</td>
+                                <td>Main</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение библиотеки Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('collapsed');
+            });
+
+            // Инициализация графиков после загрузки страницы
+            setTimeout(() => {
+                try {
+                    // Инициализируем графики
+                    initHistoryChart();
+                    initValuationChart();
+                    initMovementChart();
+                    initCategoryChart();
+                    initSourceChart();
+                    
+                    // Скрываем индикаторы загрузки
+                    hideChartLoaders();
+                    
+                    console.log('Графики инициализированы');
+                } catch (error) {
+                    console.error('Ошибка при инициализации графиков:', error);
+                    // Показываем сообщение об ошибке загрузки графиков
+                    showChartError();
+                }
+            }, 500);
+        });
+        
+        // Функция для скрытия всех индикаторов загрузки
+        function hideChartLoaders() {
+            document.querySelectorAll('.chart-loading').forEach(loader => {
+                loader.classList.add('hidden');
+            });
+        }
+        
+        // Функция для показа ошибки при загрузке графиков
+        function showChartError() {
+            document.querySelectorAll('.chart-loading').forEach(loader => {
+                loader.innerHTML = '<i class="fas fa-exclamation-triangle fa-3x" style="color: #ea4335;"></i><p>Не удалось загрузить график</p>';
+            });
+        }
+
+        // Stock Level History Chart
+        function initHistoryChart() {
+            const ctx = document.getElementById('historyChart').getContext('2d');
+            const historyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь'],
+                    datasets: [{
+                        label: 'Резервирование',
+                        data: [120, 180, 150, 200, 250],
+                        borderColor: '#4285f4',
+                        backgroundColor: 'rgba(66, 133, 244, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            return historyChart;
+        }
+
+        // Inventory Valuation Chart
+        function initValuationChart() {
+            const ctx = document.getElementById('valuationChart').getContext('2d');
+            const valuationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь'],
+                    datasets: [{
+                        label: 'Стоимость',
+                        data: [450000, 520000, 480000, 610000, 580000],
+                        backgroundColor: 'rgba(76, 175, 80, 0.6)',
+                        borderColor: '#4caf50',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            return valuationChart;
+        }
+
+        // Movement Chart
+        function initMovementChart() {
+            const ctx = document.getElementById('movementChart').getContext('2d');
+            const movementChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+                    datasets: [{
+                        label: 'Приход',
+                        data: [15, 8, 12, 5, 10, 3, 0],
+                        borderColor: '#34a853',
+                        backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }, {
+                        label: 'Расход',
+                        data: [8, 12, 6, 9, 7, 5, 0],
+                        borderColor: '#ea4335',
+                        backgroundColor: 'rgba(234, 67, 53, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            return movementChart;
+        }
+
+        // Category Chart
+        function initCategoryChart() {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Металлы', 'Электрика', 'Пластик', 'Инструменты', 'Химия'],
+                    datasets: [{
+                        label: 'Категории',
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            '#4285f4', // Google Blue
+                            '#ea4335', // Google Red
+                            '#fbbc05', // Google Yellow
+                            '#34a853', // Google Green
+                            '#673ab7'  // Purple
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+            return categoryChart;
+        }
+
+        // Source Chart
+        function initSourceChart() {
+            const ctx = document.getElementById('sourceChart').getContext('2d');
+            const sourceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Продажи', 'Производство', 'Внутреннее', 'Перемещение', 'Проекты'],
+                    datasets: [{
+                        label: 'Источники',
+                        data: [45, 30, 15, 7, 3],
+                        backgroundColor: [
+                            'rgba(66, 133, 244, 0.7)',  // Blue
+                            'rgba(234, 67, 53, 0.7)',   // Red
+                            'rgba(251, 188, 5, 0.7)',   // Yellow
+                            'rgba(52, 168, 83, 0.7)',   // Green
+                            'rgba(103, 58, 183, 0.7)'   // Purple
+                        ],
+                        borderColor: [
+                            '#4285f4',
+                            '#ea4335',
+                            '#fbbc05',
+                            '#34a853',
+                            '#673ab7'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            return sourceChart;
+        }
+    </script>
+</body>
+</html> 

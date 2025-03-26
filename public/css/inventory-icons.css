@@ -1,0 +1,325 @@
+/* 
+ * Inventory Icons - Enhanced version
+ * Modern, consistent icons for the inventory management system
+ */
+
+/* Base icon styles */
+.inv-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    margin-right: 8px;
+    transition: all 0.2s ease;
+}
+
+.inv-icon-sm {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+}
+
+.inv-icon-lg {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+}
+
+.inv-icon-rounded {
+    border-radius: 50%;
+}
+
+/* Icon colors */
+.inv-icon-blue {
+    background-color: rgba(74, 107, 223, 0.1);
+    color: #4a6bdf;
+}
+
+.inv-icon-green {
+    background-color: rgba(46, 184, 115, 0.1);
+    color: #2eb873;
+}
+
+.inv-icon-red {
+    background-color: rgba(235, 77, 75, 0.1);
+    color: #eb4d4b;
+}
+
+.inv-icon-yellow {
+    background-color: rgba(254, 202, 87, 0.1);
+    color: #feca57;
+}
+
+.inv-icon-purple {
+    background-color: rgba(156, 136, 255, 0.1);
+    color: #9c88ff;
+}
+
+.inv-icon-gray {
+    background-color: rgba(116, 125, 140, 0.1);
+    color: #747d8c;
+}
+
+/* Hover effects */
+.inv-icon-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inv-icon-blue:hover {
+    background-color: #4a6bdf;
+    color: white;
+}
+
+.inv-icon-green:hover {
+    background-color: #2eb873;
+    color: white;
+}
+
+.inv-icon-red:hover {
+    background-color: #eb4d4b;
+    color: white;
+}
+
+.inv-icon-yellow:hover {
+    background-color: #feca57;
+    color: white;
+}
+
+.inv-icon-purple:hover {
+    background-color: #9c88ff;
+    color: white;
+}
+
+.inv-icon-gray:hover {
+    background-color: #747d8c;
+    color: white;
+}
+
+/* Icon with badge */
+.inv-icon-badge {
+    position: relative;
+}
+
+.inv-icon-badge::after {
+    content: attr(data-badge);
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #eb4d4b;
+    color: white;
+    font-size: 10px;
+    min-width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    font-weight: 600;
+}
+
+/* Status icon indicators */
+.inv-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.inv-status i {
+    margin-right: 5px;
+    font-size: 10px;
+}
+
+.inv-status-success {
+    background-color: rgba(46, 184, 115, 0.1);
+    color: #2eb873;
+}
+
+.inv-status-warning {
+    background-color: rgba(254, 202, 87, 0.1);
+    color: #feca57;
+}
+
+.inv-status-danger {
+    background-color: rgba(235, 77, 75, 0.1);
+    color: #eb4d4b;
+}
+
+.inv-status-info {
+    background-color: rgba(74, 107, 223, 0.1);
+    color: #4a6bdf;
+}
+
+.inv-status-neutral {
+    background-color: rgba(116, 125, 140, 0.1);
+    color: #747d8c;
+}
+
+/* Specific icon styles for inventory features */
+.inv-icon-product {
+    background-color: rgba(74, 107, 223, 0.1);
+    color: #4a6bdf;
+}
+
+.inv-icon-category {
+    background-color: rgba(156, 136, 255, 0.1);
+    color: #9c88ff;
+}
+
+.inv-icon-location {
+    background-color: rgba(46, 184, 115, 0.1);
+    color: #2eb873;
+}
+
+.inv-icon-movement {
+    background-color: rgba(254, 202, 87, 0.1);
+    color: #feca57;
+}
+
+.inv-icon-report {
+    background-color: rgba(116, 125, 140, 0.1);
+    color: #747d8c;
+}
+
+.inv-icon-settings {
+    background-color: rgba(149, 175, 192, 0.1);
+    color: #95afc0;
+}
+
+.inv-icon-alert {
+    background-color: rgba(235, 77, 75, 0.1);
+    color: #eb4d4b;
+}
+
+/* Icon animations */
+.inv-icon-pulse {
+    animation: iconPulse 2s infinite;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.inv-icon-spin {
+    animation: iconSpin 2s linear infinite;
+}
+
+@keyframes iconSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Action buttons with icons */
+.inv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.inv-btn i {
+    margin-right: 8px;
+}
+
+.inv-btn-primary {
+    background-color: #4a6bdf;
+    color: white;
+}
+
+.inv-btn-success {
+    background-color: #2eb873;
+    color: white;
+}
+
+.inv-btn-danger {
+    background-color: #eb4d4b;
+    color: white;
+}
+
+.inv-btn-warning {
+    background-color: #feca57;
+    color: white;
+}
+
+.inv-btn-info {
+    background-color: #70a1ff;
+    color: white;
+}
+
+.inv-btn-outline {
+    background-color: transparent;
+    border: 1px solid currentColor;
+}
+
+.inv-btn-outline-primary {
+    color: #4a6bdf;
+    border-color: #4a6bdf;
+}
+
+.inv-btn-outline-success {
+    color: #2eb873;
+    border-color: #2eb873;
+}
+
+.inv-btn-outline-danger {
+    color: #eb4d4b;
+    border-color: #eb4d4b;
+}
+
+.inv-btn-outline-warning {
+    color: #feca57;
+    border-color: #feca57;
+}
+
+.inv-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon usage examples */
+/* 
+<div class="inv-icon inv-icon-blue">
+    <i class="fas fa-box"></i>
+</div>
+
+<div class="inv-icon inv-icon-green inv-icon-rounded">
+    <i class="fas fa-check"></i>
+</div>
+
+<div class="inv-icon inv-icon-red inv-icon-badge" data-badge="5">
+    <i class="fas fa-exclamation"></i>
+</div>
+
+<div class="inv-status inv-status-success">
+    <i class="fas fa-check"></i>
+    Active
+</div>
+
+<button class="inv-btn inv-btn-primary">
+    <i class="fas fa-plus"></i>
+    Add Item
+</button>
+*/ 

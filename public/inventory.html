@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Inventory Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="css/inventory-icons.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/inventory-common.js"></script>
+    <!-- Добавляем наш API скрипт -->
+    <script src="js/inventory-api.js"></script>
+    <!-- Добавляем скрипт для работы с кнопками -->
+    <script src="js/inventory-actions.js"></script>
+    <!-- Добавляем скрипт для графиков -->
+    <script src="js/chart-data.js"></script>
+    
+    <script>
+        // Загружаем модальные окна при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создаем контейнер для модальных окон, если его еще нет
+            let modalContainer = document.getElementById('modal-container');
+            if (!modalContainer) {
+                modalContainer = document.createElement('div');
+                modalContainer.id = 'modal-container';
+                document.body.appendChild(modalContainer);
+            }
+            
+            // Загружаем модальные окна через AJAX
+            fetch('inventory-modals.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка загрузки модальных окон: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    modalContainer.innerHTML = html;
+                    console.log('Модальные окна успешно загружены');
+                    
+                    // Инициализируем обработчики закрытия для всех модальных окон
+                    document.querySelectorAll('.modal-close').forEach(closeBtn => {
+                        closeBtn.addEventListener('click', function() {
+                            closeModal();
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке модальных окон:', error);
+                });
+        });
+    </script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+            <div class="sidebar-header">
+            <h2>ERP System</h2>
+            </div>
+            <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="active"><a href="inventory.html"><i class="fas fa-box-open"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-clipboard-list"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-tasks"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+                <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                    <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                        <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <!-- Reports button is temporarily hidden -->
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Inventory Management</h1>
+                <p>Manage your products, materials and stock movements</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li class="active">
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Alerts Container -->
+        <div class="alerts-container">
+            <div class="alert alert-warning">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">Low Stock Alert</div>
+                    <div class="alert-message">12 products have reached their minimum stock level.</div>
+                </div>
+                <div class="alert-action">
+                    <button class="action-button secondary">View Details</button>
+                </div>
+            </div>
+            <div class="alert alert-danger">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">Expiring Items</div>
+                    <div class="alert-message">5 items are approaching their expiration date.</div>
+                </div>
+                <div class="alert-action">
+                    <button class="action-button secondary">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary"><i class="fas fa-plus"></i> Add New Product</button>
+            <button class="action-button primary"><i class="fas fa-file-alt"></i> Create Order</button>
+            <button class="action-button success"><i class="fas fa-clipboard-check"></i> Reserve</button>
+            <button class="action-button warning"><i class="fas fa-exchange-alt"></i> Move</button>
+            <button class="action-button danger"><i class="fas fa-minus-circle"></i> Write-off</button>
+            <button class="action-button secondary"><i class="fas fa-tasks"></i> Inventory Check</button>
+            </div>
+            
+        <!-- Inventory Statistics -->
+        <div class="inventory-stats">
+            <div class="stat-card">
+                <i class="fas fa-boxes icon-total"></i>
+                <div class="stat-info">
+                    <div class="stat-number">2,547</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exclamation-triangle icon-low"></i>
+                <div class="stat-info">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Low Stock Items</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-calendar-times icon-expired"></i>
+                <div class="stat-info">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Expiring Soon</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-truck-loading icon-onorder"></i>
+                <div class="stat-info">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">On Order</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products...">
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Category:</label>
+                <select class="filter-control filter-category">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+                    <div class="filter-group">
+                <label class="filter-label">Supplier:</label>
+                <select class="filter-control filter-supplier">
+                    <option value="">All Suppliers</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                <label class="filter-label">Status:</label>
+                <select class="filter-control">
+                    <option value="">All Status</option>
+                    <option value="in-stock">In Stock</option>
+                    <option value="low-stock">Low Stock</option>
+                    <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                    </div>
+            <div class="advanced-filter-toggle">
+                Advanced Filters <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Advanced Filters (hidden by default) -->
+        <div class="advanced-filters">
+            <div class="advanced-filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Expiry Date:</label>
+                    <input type="date" class="filter-control">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Price Range:</label>
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        <input type="number" placeholder="Min" class="filter-control" data-filter="min-price" style="width: 80px;">
+                        <span>-</span>
+                        <input type="number" placeholder="Max" class="filter-control" data-filter="max-price" style="width: 80px;">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Location:</label>
+                    <select class="filter-control filter-location">
+                        <option value="">All Locations</option>
+                    </select>
+                </div>
+            </div>
+            <div class="advanced-filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Batch Number:</label>
+                    <input type="text" class="filter-control">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Unit of Measure:</label>
+                    <select class="filter-control filter-uom">
+                        <option value="">All Units</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-button primary">Apply Filters</button>
+                    <button class="filter-button secondary">Reset</button>
+                </div>
+                    </div>
+                </div>
+                
+        <!-- Product Data Table View -->
+        <div id="products-tab-content" class="tab-content active">
+            <div class="table-container">
+                <table class="data-table">
+                            <thead>
+                                <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Product ID</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>
+                                Stock
+                                <div class="unit-switcher">
+                                    <div class="unit-option active" data-unit="pcs">PCS</div>
+                                    <div class="unit-option" data-unit="kg">KG</div>
+                                </div>
+                            </th>
+                            <th>Unit Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Данные будут загружены через JavaScript -->
+                            </tbody>
+                        </table>
+            </div>
+        </div>
+
+        <!-- Charts Container -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Inventory Value by Category</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action"><i class="fas fa-download"></i></button>
+                        <button class="chart-action"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="categoryValueChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Stock Turnover Rate</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action"><i class="fas fa-download"></i></button>
+                        <button class="chart-action"><i class="fas fa-expand"></i></button>
+                        </div>
+                        </div>
+                <div class="chart-body">
+                    <canvas id="turnoverRateChart"></canvas>
+                        </div>
+                        </div>
+                        </div>
+
+        <!-- Import/Export Module -->
+        <div class="import-export-panel">
+            <h3>Import/Export Data</h3>
+            <div class="import-export-options">
+                <div class="import-export-option">
+                    <div class="option-icon">
+                        <i class="fas fa-file-import"></i>
+                        </div>
+                    <div class="option-title">Import Data</div>
+                    <div class="option-description">Import inventory data from CSV, Excel or XML files</div>
+                        </div>
+                <div class="import-export-option">
+                    <div class="option-icon">
+                        <i class="fas fa-file-export"></i>
+                        </div>
+                    <div class="option-title">Export Data</div>
+                    <div class="option-description">Export your inventory data to different formats</div>
+                </div>
+                <div class="import-export-option">
+                    <div class="option-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="option-title">Generate Report</div>
+                    <div class="option-description">Create comprehensive PDF reports</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Включаем модальные окна -->
+    <div id="modals-container"></div>
+
+    <!-- JavaScript для Chart.js и UI функциональности -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загружаем модальные окна
+            fetch('inventory-modals.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('modals-container').innerHTML = html;
+                    // После загрузки модальных окон, инициализируем обработчики
+                    if (typeof initActionButtons === 'function') {
+                        initActionButtons();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading modals:', error);
+                });
+            
+            // Инициализируем графики с реальными данными
+            if (typeof initCharts === 'function') {
+                initCharts();
+            }
+            
+            // Добавляем обработчик для переключения фильтров
+            document.querySelector('.advanced-filter-toggle').addEventListener('click', function() {
+                this.classList.toggle('open');
+                document.querySelector('.advanced-filters').classList.toggle('show');
+            });
+
+            // Добавляем обработчики для переключения единиц измерения
+            document.querySelectorAll('.unit-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.unit-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    // Здесь была бы логика переключения единиц измерения
+                });
+            });
+        });
+    </script>
+</body>
+</html>

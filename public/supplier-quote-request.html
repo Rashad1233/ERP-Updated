@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request to Supplier to Quote | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sales-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="active"><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Request to Supplier to Quote</h1>
+                <p>Create and manage requests for quotations to suppliers</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">4</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary"><i class="fas fa-plus"></i> New Request</button>
+            <button class="action-button secondary"><i class="fas fa-filter"></i> Filter</button>
+            <button class="action-button secondary"><i class="fas fa-download"></i> Export</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-container">
+            <div class="search-box">
+                <input type="text" placeholder="Search requests...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-options">
+                <select>
+                    <option value="">All Statuses</option>
+                    <option value="draft">Draft</option>
+                    <option value="sent">Sent</option>
+                    <option value="answered">Answered</option>
+                    <option value="expired">Expired</option>
+                </select>
+                <select>
+                    <option value="">All Suppliers</option>
+                    <option value="supplier1">TechnoProServe Inc.</option>
+                    <option value="supplier2">Global Tech Solutions</option>
+                    <option value="supplier3">Northwest Distributors</option>
+                </select>
+                <select>
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Quote Requests Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select-all">
+                        </th>
+                        <th>Request #</th>
+                        <th>Supplier</th>
+                        <th>Date Created</th>
+                        <th>Due Date</th>
+                        <th>Items</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>SRQ-2024-0025</td>
+                        <td>TechnoProServe Inc.</td>
+                        <td>2024-07-10</td>
+                        <td>2024-07-25</td>
+                        <td>4</td>
+                        <td><span class="status-badge status-pending">Sent</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>SRQ-2024-0024</td>
+                        <td>Global Tech Solutions</td>
+                        <td>2024-07-08</td>
+                        <td>2024-07-22</td>
+                        <td>6</td>
+                        <td><span class="status-badge status-approved">Answered</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>SRQ-2024-0023</td>
+                        <td>Northwest Distributors</td>
+                        <td>2024-07-05</td>
+                        <td>2024-07-20</td>
+                        <td>3</td>
+                        <td><span class="status-badge status-rejected">Expired</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>SRQ-2024-0022</td>
+                        <td>Smirnov Enterprises</td>
+                        <td>2024-07-03</td>
+                        <td>2024-07-18</td>
+                        <td>5</td>
+                        <td><span class="status-badge status-approved">Answered</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>SRQ-2024-0021</td>
+                        <td>Construction Materials Ltd.</td>
+                        <td>2024-07-01</td>
+                        <td>2024-07-15</td>
+                        <td>8</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button"><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-button">10</button>
+            <button class="pagination-button"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all checkbox functionality
+            const selectAllCheckbox = document.getElementById('select-all');
+            const itemCheckboxes = document.querySelectorAll('.select-item');
+            
+            selectAllCheckbox.addEventListener('change', function() {
+                itemCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+            
+            // Check if all items are selected and update the "select all" checkbox
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(itemCheckboxes).every(c => c.checked);
+                    const someChecked = Array.from(itemCheckboxes).some(c => c.checked);
+                    
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

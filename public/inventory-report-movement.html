@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Movement Analysis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-cubes"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-dolly-flatbed"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-calculator"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1><i class="fas fa-random"></i> Movement Analysis</h1>
+                <p>Analyze inventory movements, receipts and issues</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu show">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li class="active"><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Stats Overview -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>1,245</h3>
+                    <p>Поступления</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>975</h3>
+                    <p>Отгрузки</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>368</h3>
+                    <p>Перемещения</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <div class="stat-data">
+                    <h3>4.2</h3>
+                    <p>Оборачиваемость (раз в год)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-filter"></i> Фильтры</h2>
+                <button class="btn-default"><i class="fas fa-redo"></i> Сбросить</button>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="movementType">Тип движения</label>
+                        <select id="movementType">
+                            <option value="all" selected>Все типы</option>
+                            <option value="receipt">Поступления</option>
+                            <option value="issue">Отгрузки</option>
+                            <option value="transfer">Перемещения</option>
+                            <option value="adjustment">Корректировки</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Категория</label>
+                        <select id="productCategory">
+                            <option value="">Все категории</option>
+                            <option value="metals">Металлы</option>
+                            <option value="plastics">Пластики</option>
+                            <option value="electronics">Электроника</option>
+                            <option value="chemicals">Химикаты</option>
+                            <option value="tools">Инструменты</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timePeriod">Период</label>
+                        <select id="timePeriod">
+                            <option value="week">Неделя</option>
+                            <option value="month" selected>Месяц</option>
+                            <option value="quarter">Квартал</option>
+                            <option value="year">Год</option>
+                            <option value="custom">Выбрать период</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Склад</label>
+                        <select id="location">
+                            <option value="">Все склады</option>
+                            <option value="main" selected>Основной склад</option>
+                            <option value="secondary">Вторичный склад</option>
+                            <option value="production">Производственный склад</option>
+                            <option value="shipping">Зона отгрузки</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchProduct">Поиск товара</label>
+                        <div class="search-container">
+                            <input type="text" id="searchProduct" placeholder="Введите название или SKU товара...">
+                            <button class="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="viewBy">Группировать по</label>
+                        <select id="viewBy">
+                            <option value="day">Дням</option>
+                            <option value="week" selected>Неделям</option>
+                            <option value="month">Месяцам</option>
+                            <option value="product">Товарам</option>
+                            <option value="category">Категориям</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-primary"><i class="fas fa-search"></i> Применить фильтры</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movement Overview Chart -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-line"></i> Общие данные по движению</h2>
+                <div class="chart-options">
+                    <button class="btn-chart active" data-period="weekly">Неделя</button>
+                    <button class="btn-chart" data-period="monthly">Месяц</button>
+                    <button class="btn-chart" data-period="quarterly">Квартал</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="main-chart-container">
+                    <canvas id="movementChart" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movement Analysis -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3><i class="fas fa-truck-loading"></i> Источники поступлений</h3>
+                <div class="chart-content">
+                    <canvas id="receiptSourceChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3><i class="fas fa-shipping-fast"></i> Назначения отгрузок</h3>
+                <div class="chart-content">
+                    <canvas id="issueDestinationChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movement Details Table -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-table"></i> Детальный анализ движения</h2>
+                <button class="btn-default"><i class="fas fa-download"></i> Скачать CSV</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Товар</th>
+                                <th>Тип движения</th>
+                                <th>Количество</th>
+                                <th>Ед. изм.</th>
+                                <th>Источник/Назначение</th>
+                                <th>Документ</th>
+                                <th>Склад</th>
+                                <th>Сотрудник</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15.10.2023</td>
+                                <td>Алюминиевый профиль A1001</td>
+                                <td><span class="badge badge-green">Поступление</span></td>
+                                <td>+50</td>
+                                <td>шт.</td>
+                                <td>Поставщик "МеталлПром"</td>
+                                <td><a href="#">PO-2023-0156</a></td>
+                                <td>Основной</td>
+                                <td>Иванов И.</td>
+                            </tr>
+                            <tr>
+                                <td>15.10.2023</td>
+                                <td>Пластиковый корпус P-200</td>
+                                <td><span class="badge badge-red">Отгрузка</span></td>
+                                <td>-25</td>
+                                <td>шт.</td>
+                                <td>Производство</td>
+                                <td><a href="#">MO-2023-0089</a></td>
+                                <td>Основной</td>
+                                <td>Петров П.</td>
+                            </tr>
+                            <tr>
+                                <td>16.10.2023</td>
+                                <td>Плата управления E-500</td>
+                                <td><span class="badge badge-blue">Перемещение</span></td>
+                                <td>-40/+40</td>
+                                <td>шт.</td>
+                                <td>Основной → Производственный</td>
+                                <td><a href="#">TRF-2023-0067</a></td>
+                                <td>Основной, Производственный</td>
+                                <td>Сидоров С.</td>
+                            </tr>
+                            <tr>
+                                <td>16.10.2023</td>
+                                <td>Подшипники SKF 6205</td>
+                                <td><span class="badge badge-green">Поступление</span></td>
+                                <td>+30</td>
+                                <td>шт.</td>
+                                <td>Поставщик "ПодшипникТрейд"</td>
+                                <td><a href="#">PO-2023-0157</a></td>
+                                <td>Основной</td>
+                                <td>Иванов И.</td>
+                            </tr>
+                            <tr>
+                                <td>17.10.2023</td>
+                                <td>Крепеж M100-2</td>
+                                <td><span class="badge badge-red">Отгрузка</span></td>
+                                <td>-150</td>
+                                <td>шт.</td>
+                                <td>Заказ SO-2023-0192</td>
+                                <td><a href="#">SHP-2023-0128</a></td>
+                                <td>Основной</td>
+                                <td>Петров П.</td>
+                            </tr>
+                            <tr>
+                                <td>17.10.2023</td>
+                                <td>Сталь S355</td>
+                                <td><span class="badge badge-yellow">Корректировка</span></td>
+                                <td>-5</td>
+                                <td>кг</td>
+                                <td>Инвентаризация</td>
+                                <td><a href="#">ADJ-2023-0034</a></td>
+                                <td>Основной</td>
+                                <td>Сидоров С.</td>
+                            </tr>
+                            <tr>
+                                <td>18.10.2023</td>
+                                <td>Плата управления E-500</td>
+                                <td><span class="badge badge-red">Отгрузка</span></td>
+                                <td>-15</td>
+                                <td>шт.</td>
+                                <td>Производство</td>
+                                <td><a href="#">MO-2023-0090</a></td>
+                                <td>Производственный</td>
+                                <td>Петров П.</td>
+                            </tr>
+                            <tr>
+                                <td>18.10.2023</td>
+                                <td>Алюминиевый профиль A1001</td>
+                                <td><span class="badge badge-red">Отгрузка</span></td>
+                                <td>-30</td>
+                                <td>шт.</td>
+                                <td>Заказ SO-2023-0193</td>
+                                <td><a href="#">SHP-2023-0129</a></td>
+                                <td>Основной</td>
+                                <td>Петров П.</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="pagination">
+                                        <span>Страница 1 из 24</span>
+                                        <div class="pagination-controls">
+                                            <button disabled><i class="fas fa-chevron-left"></i></button>
+                                            <button class="active">1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button><i class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение библиотеки Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('collapsed');
+            });
+
+            // Initialize Charts
+            initializeMovementChart();
+            initializeReceiptSourceChart();
+            initializeIssueDestinationChart();
+        });
+
+        function initializeMovementChart() {
+            const ctx = document.getElementById('movementChart').getContext('2d');
+            const movementChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Неделя 1', 'Неделя 2', 'Неделя 3', 'Неделя 4'],
+                    datasets: [{
+                        label: 'Поступления',
+                        data: [320, 280, 350, 295],
+                        borderColor: '#34a853',
+                        backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Отгрузки',
+                        data: [250, 270, 240, 215],
+                        borderColor: '#ea4335',
+                        backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Перемещения',
+                        data: [100, 85, 90, 93],
+                        borderColor: '#4285f4',
+                        backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Количество операций'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Период'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart period buttons
+            document.querySelectorAll('.btn-chart').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.btn-chart').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update chart data based on selected period
+                    const period = this.getAttribute('data-period');
+                    updateMovementChartPeriod(movementChart, period);
+                });
+            });
+        }
+
+        function updateMovementChartPeriod(chart, period) {
+            let labels;
+            let receiptData;
+            let issueData;
+            let transferData;
+            
+            // Set labels and data based on period
+            switch(period) {
+                case 'weekly':
+                    labels = ['Неделя 1', 'Неделя 2', 'Неделя 3', 'Неделя 4'];
+                    receiptData = [320, 280, 350, 295];
+                    issueData = [250, 270, 240, 215];
+                    transferData = [100, 85, 90, 93];
+                    break;
+                case 'monthly':
+                    labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+                    receiptData = [290, 310, 340, 320, 350, 360, 380, 370, 400, 420, 410, 430];
+                    issueData = [230, 240, 260, 250, 280, 290, 300, 310, 330, 350, 340, 360];
+                    transferData = [80, 85, 90, 95, 100, 110, 115, 120, 125, 130, 135, 140];
+                    break;
+                case 'quarterly':
+                    labels = ['Q1 2022', 'Q2 2022', 'Q3 2022', 'Q4 2022', 'Q1 2023', 'Q2 2023', 'Q3 2023', 'Q4 2023'];
+                    receiptData = [900, 950, 1000, 1050, 1100, 1150, 1200, 1245];
+                    issueData = [700, 750, 800, 850, 900, 925, 950, 975];
+                    transferData = [250, 270, 290, 310, 330, 340, 350, 368];
+                    break;
+            }
+            
+            // Update chart data
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = receiptData;
+            chart.data.datasets[1].data = issueData;
+            chart.data.datasets[2].data = transferData;
+            
+            chart.update();
+        }
+
+        function initializeReceiptSourceChart() {
+            const ctx = document.getElementById('receiptSourceChart').getContext('2d');
+            const receiptSourceChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Поставщики', 'Возвраты от клиентов', 'Производство', 'Корректировки', 'Прочие'],
+                    datasets: [{
+                        label: 'Источники поступлений',
+                        data: [65, 12, 15, 5, 3],
+                        backgroundColor: [
+                            '#4285f4', // Google Blue
+                            '#34a853', // Google Green
+                            '#fbbc05', // Google Yellow
+                            '#ea4335', // Google Red
+                            '#673ab7'  // Purple
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeIssueDestinationChart() {
+            const ctx = document.getElementById('issueDestinationChart').getContext('2d');
+            const issueDestinationChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Клиенты', 'Производство', 'Списания', 'Возвраты поставщикам', 'Прочие'],
+                    datasets: [{
+                        label: 'Назначения отгрузок',
+                        data: [53, 32, 8, 5, 2],
+                        backgroundColor: [
+                            '#4285f4', // Google Blue
+                            '#34a853', // Google Green
+                            '#fbbc05', // Google Yellow
+                            '#ea4335', // Google Red
+                            '#673ab7'  // Purple
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

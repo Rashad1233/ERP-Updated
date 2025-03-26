@@ -1,0 +1,429 @@
+<!-- Модальные окна для инвентаря -->
+
+<!-- Модальное окно добавления/редактирования продукта -->
+<div id="add-product-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Добавить новый товар</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-product-form" onsubmit="saveNewProduct(this); return false;">
+                    <!-- Скрытое поле для идентификатора товара (используется при редактировании) -->
+                    <input type="hidden" name="id" value="">
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-code">Код товара*</label>
+                        <input type="text" class="modal-input" id="product-code" name="code" required placeholder="Например: AL-001">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-name">Название товара*</label>
+                        <input type="text" class="modal-input" id="product-name" name="name" required placeholder="Введите название товара">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-description">Описание</label>
+                        <textarea class="modal-textarea" id="product-description" name="description" placeholder="Подробное описание товара"></textarea>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-category">Категория*</label>
+                        <select class="modal-select" id="product-category" name="category_id" required>
+                            <option value="">Выберите категорию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-uom">Единица измерения*</label>
+                        <select class="modal-select" id="product-uom" name="uom_id" required>
+                            <option value="">Выберите единицу измерения</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-min-quantity">Минимальное количество</label>
+                        <input type="number" class="modal-input" id="product-min-quantity" name="min_quantity" min="0" step="0.01" placeholder="Минимальный порог запаса">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-unit-price">Цена за единицу</label>
+                        <input type="number" class="modal-input" id="product-unit-price" name="unit_price" min="0" step="0.01" placeholder="Цена за единицу">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-currency">Валюта</label>
+                        <select class="modal-select" id="product-currency" name="currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="RUB">RUB</option>
+                            <option value="GBP">GBP</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-supplier">Поставщик</label>
+                        <select class="modal-select" id="product-supplier" name="supplier_id">
+                            <option value="">Выберите поставщика</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-status">Статус</label>
+                        <select class="modal-select" id="product-status" name="status">
+                            <option value="active">В наличии</option>
+                            <option value="reserved">Зарезервировано</option>
+                            <option value="in_transit">В пути</option>
+                            <option value="damaged">Повреждено</option>
+                            <option value="expired">Истёк срок</option>
+                            <option value="scrapped">Списано</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="product-image">URL изображения</label>
+                        <input type="text" class="modal-input" id="product-image" name="image_url" placeholder="URL изображения товара">
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-button">Сохранить</button>
+                        <button type="button" class="modal-button secondary" onclick="closeModal()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно создания заказа -->
+<div id="create-order-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Создать заказ</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Функционал создания заказов будет реализован в следующем обновлении.</p>
+                <div class="modal-footer">
+                    <button type="button" class="modal-button secondary" onclick="closeModal()">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно резервирования запасов -->
+<div id="reserve-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Зарезервировать товар</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reserve-form" onsubmit="createReservation(this); return false;">
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="reserve-item">Товар*</label>
+                        <select class="modal-select" id="reserve-item" name="item_id" required>
+                            <option value="">Выберите товар</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="reserve-order">Заказ (опционально)</label>
+                        <select class="modal-select" id="reserve-order" name="order_id">
+                            <option value="">Выберите заказ</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="reserve-location">Локация*</label>
+                        <select class="modal-select" id="reserve-location" name="location_id" required>
+                            <option value="">Выберите локацию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="reserve-quantity">Количество*</label>
+                        <input type="number" class="modal-input" id="reserve-quantity" name="quantity" min="0.01" step="0.01" required placeholder="Количество для резервирования">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="reserve-notes">Примечания</label>
+                        <textarea class="modal-textarea" id="reserve-notes" name="notes" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-button">Зарезервировать</button>
+                        <button type="button" class="modal-button secondary" onclick="closeModal()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно перемещения товаров -->
+<div id="move-stock-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Переместить товар</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="move-stock-form" onsubmit="moveStock(this); return false;">
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="move-item">Товар*</label>
+                        <select class="modal-select" id="move-item" name="item_id" required>
+                            <option value="">Выберите товар</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="move-from-location">Откуда*</label>
+                        <select class="modal-select" id="move-from-location" name="from_location_id" required>
+                            <option value="">Выберите локацию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="move-to-location">Куда*</label>
+                        <select class="modal-select" id="move-to-location" name="to_location_id" required>
+                            <option value="">Выберите локацию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="move-quantity">Количество*</label>
+                        <input type="number" class="modal-input" id="move-quantity" name="quantity" min="0.01" step="0.01" required placeholder="Количество для перемещения">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="move-notes">Примечания</label>
+                        <textarea class="modal-textarea" id="move-notes" name="notes" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-button">Переместить</button>
+                        <button type="button" class="modal-button secondary" onclick="closeModal()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно списания товаров -->
+<div id="write-off-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Списать товар</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="write-off-form" onsubmit="writeOffStock(this); return false;">
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="write-off-item">Товар*</label>
+                        <select class="modal-select" id="write-off-item" name="item_id" required>
+                            <option value="">Выберите товар</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="write-off-location">Локация*</label>
+                        <select class="modal-select" id="write-off-location" name="location_id" required>
+                            <option value="">Выберите локацию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="write-off-quantity">Количество*</label>
+                        <input type="number" class="modal-input" id="write-off-quantity" name="quantity" min="0.01" step="0.01" required placeholder="Количество для списания">
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="write-off-reason">Причина списания*</label>
+                        <select class="modal-select" id="write-off-reason" name="reason" required>
+                            <option value="">Выберите причину</option>
+                            <option value="damaged">Повреждение</option>
+                            <option value="expired">Истёк срок</option>
+                            <option value="lost">Утрата</option>
+                            <option value="quality">Не соответствует качеству</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="write-off-notes">Примечания</label>
+                        <textarea class="modal-textarea" id="write-off-notes" name="notes" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-button danger">Списать</button>
+                        <button type="button" class="modal-button secondary" onclick="closeModal()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно инвентаризации -->
+<div id="inventory-check-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Провести инвентаризацию</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="inventory-check-form" onsubmit="startInventoryCheck(this); return false;">
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="check-location">Локация*</label>
+                        <select class="modal-select" id="check-location" name="location_id" required>
+                            <option value="">Выберите локацию</option>
+                            <!-- Опции будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="check-type">Тип проверки*</label>
+                        <select class="modal-select" id="check-type" name="check_type" required>
+                            <option value="full">Полная инвентаризация</option>
+                            <option value="partial">Частичная инвентаризация</option>
+                            <option value="sample">Выборочная проверка</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-form-group">
+                        <label class="modal-label" for="check-notes">Примечания</label>
+                        <textarea class="modal-textarea" id="check-notes" name="notes" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-button">Начать инвентаризацию</button>
+                        <button type="button" class="modal-button secondary" onclick="closeModal()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно просмотра деталей товара -->
+<div id="view-product-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Детали товара</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-details">
+                    <div class="product-image-container">
+                        <div class="product-image-large"></div>
+                    </div>
+                    <div class="product-info">
+                        <h2 class="product-title"></h2>
+                        <div class="product-code"></div>
+                        <div class="product-description"></div>
+                        
+                        <div class="product-data">
+                            <div class="data-group">
+                                <div class="data-label">Категория:</div>
+                                <div class="data-value category"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Единица измерения:</div>
+                                <div class="data-value uom"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Текущее количество:</div>
+                                <div class="data-value current-quantity"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Минимальное количество:</div>
+                                <div class="data-value min-quantity"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Цена за единицу:</div>
+                                <div class="data-value price"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Поставщик:</div>
+                                <div class="data-value supplier"></div>
+                            </div>
+                            <div class="data-group">
+                                <div class="data-label">Статус:</div>
+                                <div class="data-value status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-stock-info">
+                    <h3>Информация о запасах</h3>
+                    <table class="stock-table">
+                        <thead>
+                            <tr>
+                                <th>Локация</th>
+                                <th>Количество</th>
+                                <th>Зарезервировано</th>
+                                <th>Доступно</th>
+                            </tr>
+                        </thead>
+                        <tbody class="stock-data">
+                            <!-- Здесь будут данные о запасах товара -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-button edit">Редактировать</button>
+                <button type="button" class="modal-button close secondary">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно подтверждения удаления -->
+<div id="confirm-delete-modal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Подтверждение удаления</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить следующий товар?</p>
+                <div class="product-to-delete">
+                    <strong class="product-name"></strong>
+                    <div class="product-code"></div>
+                    <div class="product-quantity"></div>
+                </div>
+                <div class="delete-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Это действие нельзя отменить. Все данные о товаре будут безвозвратно удалены.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-button delete danger">Удалить</button>
+                <button type="button" class="modal-button cancel secondary">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div> 

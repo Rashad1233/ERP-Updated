@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Stock Movements</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="css/inventory-icons.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/inventory-common.js"></script>
+    <!-- Подключаем скрипт для работы с движениями запасов -->
+    <script src="js/inventory-movements-api.js"></script>
+    <!-- Добавляем скрипт для работы с кнопками, аналогично inventory.html -->
+    <script src="js/inventory-actions.js"></script>
+    <!-- Добавляем скрипт для графиков -->
+    <script src="js/chart-data.js"></script>
+    
+    <script>
+        // Загружаем модальные окна при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создаем контейнер для модальных окон, если его еще нет
+            let modalContainer = document.getElementById('modal-container');
+            if (!modalContainer) {
+                modalContainer = document.createElement('div');
+                modalContainer.id = 'modal-container';
+                document.body.appendChild(modalContainer);
+            }
+            
+            // Загружаем модальные окна через AJAX
+            fetch('inventory-modals.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Ошибка загрузки модальных окон: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    modalContainer.innerHTML = html;
+                    console.log('Модальные окна успешно загружены');
+                    
+                    // Инициализируем обработчики закрытия для всех модальных окон
+                    document.querySelectorAll('.modal-close').forEach(closeBtn => {
+                        closeBtn.addEventListener('click', function() {
+                            closeModal();
+                        });
+                    });
+                    
+                    // Инициализируем страницу движений после загрузки модальных окон
+                    initMovementsPage();
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке модальных окон:', error);
+                });
+        });
+    </script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-box-open"></i> Products & Materials</a></li>
+                    <li class="active"><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-clipboard-list"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-tasks"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <!-- Reports button is temporarily hidden -->
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Stock Movements</h1>
+                <p>Monitor and track all inventory movements and transactions</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button id="add-movement-btn" class="action-button primary" onclick="openAddMovementModal()"><i class="fas fa-plus"></i> Add Movement</button>
+            <button id="transfer-stock-btn" class="action-button warning" onclick="openTransferStockModal()"><i class="fas fa-exchange-alt"></i> Transfer Stock</button>
+            <button id="write-off-btn" class="action-button danger" onclick="openWriteOffModal()"><i class="fas fa-minus-circle"></i> Write-off</button>
+            <button id="export-btn" class="action-button secondary" onclick="openExportModal()"><i class="fas fa-file-export"></i> Export Log</button>
+            <button id="import-btn" class="action-button info" onclick="openImportModal()"><i class="fas fa-file-import"></i> Import Data</button>
+        </div>
+
+        <!-- Movement Statistics -->
+        <div class="inventory-stats">
+            <div class="stat-card">
+                <i class="fas fa-sign-in-alt icon-total"></i>
+                <div class="stat-info">
+                    <div class="stat-number">152</div>
+                    <div class="stat-label">Receipts This Month</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-sign-out-alt icon-low"></i>
+                <div class="stat-info">
+                    <div class="stat-number">87</div>
+                    <div class="stat-label">Issues This Month</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exclamation-triangle icon-expired"></i>
+                <div class="stat-info">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Critical Write-offs</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-random icon-onorder"></i>
+                <div class="stat-info">
+                    <div class="stat-number">34</div>
+                    <div class="stat-label">Internal Transfers</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search movements...">
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Movement Type:</label>
+                <select class="filter-control">
+                    <option value="">All Types</option>
+                    <option value="receipt">Receipt</option>
+                    <option value="issue">Issue</option>
+                    <option value="transfer">Transfer</option>
+                    <option value="adjustment">Adjustment</option>
+                    <option value="write-off">Write-off</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Date Range:</label>
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <input type="date" class="filter-control" style="width: 140px;">
+                    <span>-</span>
+                    <input type="date" class="filter-control" style="width: 140px;">
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Status:</label>
+                <select class="filter-control">
+                    <option value="">All Status</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="advanced-filter-toggle">
+                Advanced Filters <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Advanced Filters (hidden by default) -->
+        <div class="advanced-filters">
+            <div class="advanced-filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Product:</label>
+                    <select class="filter-control">
+                        <option value="">All Products</option>
+                        <option value="product-1">Electronic Component A</option>
+                        <option value="product-2">Raw Material X</option>
+                        <option value="product-3">Packaging Material Type B</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Location:</label>
+                    <select class="filter-control">
+                        <option value="">All Locations</option>
+                        <option value="warehouse-a">Warehouse A</option>
+                        <option value="warehouse-b">Warehouse B</option>
+                        <option value="warehouse-c">Warehouse C</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Document #:</label>
+                    <input type="text" class="filter-control">
+                </div>
+            </div>
+            <div class="advanced-filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">User:</label>
+                    <select class="filter-control">
+                        <option value="">All Users</option>
+                        <option value="user-1">John Doe</option>
+                        <option value="user-2">Jane Smith</option>
+                        <option value="user-3">Steve Johnson</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Reference:</label>
+                    <input type="text" class="filter-control">
+                </div>
+                <div class="filter-group">
+                    <button class="filter-button primary">Apply Filters</button>
+                    <button class="filter-button secondary">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movement Log Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Reference #</th>
+                        <th>Type</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>From Location</th>
+                        <th>To Location</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2023-06-15 09:30</td>
+                        <td>RCP-0012</td>
+                        <td><span class="status-badge status-in-stock">Receipt</span></td>
+                        <td>Electronic Component A</td>
+                        <td>+50 pcs</td>
+                        <td>Supplier A</td>
+                        <td>Warehouse A</td>
+                        <td>Completed</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" onclick="viewMovementDetails('RCP-0012')"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn" onclick="editMovement('RCP-0012')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn pdf-btn" onclick="generateMovementPDF('RCP-0012')"><i class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-06-14 14:45</td>
+                        <td>ISS-0087</td>
+                        <td><span class="status-badge status-out-of-stock">Issue</span></td>
+                        <td>Raw Material X</td>
+                        <td>-15 kg</td>
+                        <td>Warehouse B</td>
+                        <td>Production</td>
+                        <td>Completed</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" onclick="viewMovementDetails('ISS-0087')"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn" onclick="editMovement('ISS-0087')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn pdf-btn" onclick="generateMovementPDF('ISS-0087')"><i class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-06-14 11:20</td>
+                        <td>TRF-0034</td>
+                        <td><span class="status-badge status-incoming">Transfer</span></td>
+                        <td>Packaging Material Type B</td>
+                        <td>25 pcs</td>
+                        <td>Warehouse A</td>
+                        <td>Warehouse C</td>
+                        <td>Completed</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" onclick="viewMovementDetails('TRF-0034')"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn" onclick="editMovement('TRF-0034')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn pdf-btn" onclick="generateMovementPDF('TRF-0034')"><i class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="critical-row">
+                        <td>2023-06-13 16:15</td>
+                        <td>WOF-0012</td>
+                        <td><span class="status-badge status-out-of-stock">Write-off</span></td>
+                        <td>Chemical Solution Y</td>
+                        <td>-20 L</td>
+                        <td>Warehouse B</td>
+                        <td>N/A</td>
+                        <td>Completed</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" onclick="viewMovementDetails('WOF-0012')"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn" onclick="editMovement('WOF-0012')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn pdf-btn" onclick="generateMovementPDF('WOF-0012')"><i class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-06-12 10:30</td>
+                        <td>ADJ-0005</td>
+                        <td><span class="status-badge status-low-stock">Adjustment</span></td>
+                        <td>Finished Product Z</td>
+                        <td>-2 pcs</td>
+                        <td>Warehouse A</td>
+                        <td>N/A</td>
+                        <td>Completed</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" onclick="viewMovementDetails('ADJ-0005')"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn" onclick="editMovement('ADJ-0005')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn pdf-btn" onclick="generateMovementPDF('ADJ-0005')"><i class="fas fa-file-pdf"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Stock Movement Charts -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Stock Movement by Type</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action" onclick="downloadChart('movementTypeChart')"><i class="fas fa-download"></i></button>
+                        <button class="chart-action" onclick="expandChart('movementTypeChart')"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="movementTypeChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Movement Trend</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action" onclick="downloadChart('movementTrendChart')"><i class="fas fa-download"></i></button>
+                        <button class="chart-action" onclick="expandChart('movementTrendChart')"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="movementTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Chart.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up Movement Type Chart
+            var movementTypeCtx = document.getElementById('movementTypeChart').getContext('2d');
+            var movementTypeChart = new Chart(movementTypeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Receipts', 'Issues', 'Transfers', 'Adjustments', 'Write-offs'],
+                    datasets: [{
+                        data: [152, 87, 34, 18, 12],
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(155, 89, 182, 0.7)',
+                            'rgba(243, 156, 18, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(243, 156, 18, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            });
+
+            // Set up Movement Trend Chart
+            var movementTrendCtx = document.getElementById('movementTrendChart').getContext('2d');
+            var movementTrendChart = new Chart(movementTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Receipts',
+                            data: [120, 135, 90, 105, 140, 152],
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Issues',
+                            data: [80, 95, 60, 75, 92, 87],
+                            borderColor: 'rgba(231, 76, 60, 1)',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Add event listener for advanced filters toggle
+            const advancedFilterToggle = document.querySelector('.advanced-filter-toggle');
+            if (advancedFilterToggle) {
+                advancedFilterToggle.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    document.querySelector('.advanced-filters').classList.toggle('show');
+                });
+            }
+
+            // Add custom styling for critical rows
+            document.querySelectorAll('.critical-row').forEach(row => {
+                row.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                row.style.fontWeight = '500';
+            });
+            
+            // Add event handlers for action buttons in table rows
+            function addActionButtonsEventListeners() {
+                // View buttons
+                document.querySelectorAll('.view-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const movementId = this.dataset.id || this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                        viewMovementDetails(movementId);
+                    });
+                });
+                
+                // Edit buttons
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const movementId = this.dataset.id || this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                        editMovement(movementId);
+                    });
+                });
+                
+                // PDF buttons
+                document.querySelectorAll('.pdf-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const movementId = this.dataset.id || this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                        generateMovementPDF(movementId);
+                    });
+                });
+            }
+            
+            // Call this when page loads
+            addActionButtonsEventListeners();
+            
+            // Expose globally for when table is updated
+            window.addActionButtonsEventListeners = addActionButtonsEventListeners;
+        });
+    </script>
+
+    <style>
+        /* Additional styles specific to this page */
+        .critical-row {
+            background-color: rgba(231, 76, 60, 0.1) !important;
+            font-weight: 500;
+        }
+
+        .critical-row:hover td {
+            background-color: rgba(231, 76, 60, 0.15) !important;
+        }
+
+        .inventory-tab a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        /* Для отображения расширенных фильтров */
+        .advanced-filters {
+            display: none;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .advanced-filters.show {
+            display: block;
+        }
+        
+        .advanced-filter-toggle {
+            cursor: pointer;
+            user-select: none;
+            color: #007bff;
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .advanced-filter-toggle:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+        
+        .advanced-filter-toggle i {
+            margin-left: 5px;
+            transition: transform 0.2s ease;
+        }
+        
+        .advanced-filter-toggle.open i {
+            transform: rotate(180deg);
+        }
+        
+        .advanced-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .advanced-filter-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .advanced-filter-row {
+                flex-direction: column;
+            }
+        }
+
+        /* Стили для форм в модальных окнах */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .highlight-value {
+            font-weight: 600;
+            color: #007bff;
+            padding: 6px 12px;
+            background-color: rgba(0, 123, 255, 0.05);
+            border-radius: 4px;
+        }
+    </style>
+    
+    <!-- Добавляем скрипт для инициализации страницы при загрузке -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Страница движений запасов загружена');
+            
+            // Устанавливаем корректный формат даты и времени во всех полях datetime-local
+            if (typeof setCurrentDateTimeInFields === 'function') {
+                setCurrentDateTimeInFields();
+            } else {
+                console.warn('Функция setCurrentDateTimeInFields не определена');
+                // Резервный вариант установки даты
+                document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+                    if (!input.value) {
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = String(now.getMonth() + 1).padStart(2, '0');
+                        const day = String(now.getDate()).padStart(2, '0');
+                        const hours = String(now.getHours()).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+                        input.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                    }
+                });
+            }
+            
+            // Инициализируем страницу
+            if (typeof initMovementsPage === 'function') {
+                console.log('Вызываем функцию initMovementsPage');
+                initMovementsPage();
+            } else {
+                console.error('Функция initMovementsPage не определена!');
+            }
+            
+            // Обработчики для кнопок в модальных окнах
+            document.querySelectorAll('.modal-footer .btn-primary, .modal-footer .btn-danger').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (!modal) return;
+                    
+                    if (modal.id === 'add-movement-modal' && typeof submitMovementForm === 'function') {
+                        submitMovementForm();
+                    } else if (modal.id === 'transfer-stock-modal' && typeof submitTransferForm === 'function') {
+                        submitTransferForm();
+                    } else if (modal.id === 'write-off-modal' && typeof submitWriteOffForm === 'function') {
+                        submitWriteOffForm();
+                    } else if (modal.id === 'export-modal' && typeof submitExportForm === 'function') {
+                        submitExportForm();
+                    } else if (modal.id === 'import-data-modal' && typeof submitImportForm === 'function') {
+                        submitImportForm();
+                    }
+                });
+            });
+            
+            // Обработчики для кнопок закрытия модальных окон
+            document.querySelectorAll('.close-modal, .modal-footer .btn-secondary').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal && typeof closeModal === 'function') {
+                        closeModal(modal.id);
+                    } else {
+                        console.error('Функция closeModal не определена или модальное окно не найдено!');
+                        if (modal) modal.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Модальное окно добавления движения -->
+    <div id="add-movement-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить новое движение</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="add-movement-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="movement-type">Тип движения:</label>
+                        <select id="movement-type" class="form-control" required>
+                            <option value="">-- Выберите тип --</option>
+                            <option value="receipt">Поступление</option>
+                            <option value="issue">Выдача</option>
+                            <option value="transfer">Перемещение</option>
+                            <option value="adjustment">Корректировка</option>
+                            <option value="write_off">Списание</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-item">Товар:</label>
+                        <select id="movement-item" class="form-control" required>
+                            <option value="">-- Выберите товар --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-quantity">Количество:</label>
+                        <input type="number" id="movement-quantity" class="form-control" min="0.01" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group" id="from-location-group">
+                        <label for="movement-from-location">Откуда:</label>
+                        <select id="movement-from-location" class="form-control">
+                            <option value="">-- Выберите локацию --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="to-location-group">
+                        <label for="movement-to-location">Куда:</label>
+                        <select id="movement-to-location" class="form-control">
+                            <option value="">-- Выберите локацию --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-date">Дата операции:</label>
+                        <input type="datetime-local" id="movement-date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-reference">Номер документа:</label>
+                        <input type="text" id="movement-reference" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-unit-price">Стоимость единицы (руб.):</label>
+                        <input type="number" id="movement-unit-price" class="form-control" min="0" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-notes">Примечания:</label>
+                        <textarea id="movement-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('add-movement-modal')">Отмена</button>
+                <button class="btn-primary" onclick="submitMovementForm()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно перемещения запасов -->
+    <div id="transfer-stock-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Перемещение запасов</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="transfer-stock-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="transfer-item">Товар:</label>
+                        <select id="transfer-item" class="form-control" required>
+                            <option value="">-- Выберите товар --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-from-location">Откуда:</label>
+                        <select id="transfer-from-location" class="form-control" required>
+                            <option value="">-- Выберите локацию --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="transfer-available-container">
+                        <label>Доступное количество:</label>
+                        <div id="transfer-available" class="highlight-value">0</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-to-location">Куда:</label>
+                        <select id="transfer-to-location" class="form-control" required>
+                            <option value="">-- Выберите локацию --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-quantity">Количество для перемещения:</label>
+                        <input type="number" id="transfer-quantity" class="form-control" min="0.01" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-date">Дата операции:</label>
+                        <input type="datetime-local" id="transfer-date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-reference">Номер документа:</label>
+                        <input type="text" id="transfer-reference" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transfer-notes">Примечания:</label>
+                        <textarea id="transfer-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('transfer-stock-modal')">Отмена</button>
+                <button class="btn-primary" onclick="submitTransferForm()">Переместить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно списания -->
+    <div id="write-off-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Списание запасов</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="write-off-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="write-off-item">Товар:</label>
+                        <select id="write-off-item" class="form-control" required>
+                            <option value="">-- Выберите товар --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-location">Локация:</label>
+                        <select id="write-off-location" class="form-control" required>
+                            <option value="">-- Выберите локацию --</option>
+                            <!-- Будет заполнено из API -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="write-off-available-container">
+                        <label>Доступное количество:</label>
+                        <div id="write-off-available" class="highlight-value">0</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-quantity">Количество для списания:</label>
+                        <input type="number" id="write-off-quantity" class="form-control" min="0.01" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-reason">Причина списания:</label>
+                        <select id="write-off-reason" class="form-control" required>
+                            <option value="">-- Выберите причину --</option>
+                            <option value="expired">Истечение срока годности</option>
+                            <option value="damaged">Повреждение</option>
+                            <option value="quality_issue">Проблемы с качеством</option>
+                            <option value="theft">Кража/утрата</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-date">Дата операции:</label>
+                        <input type="datetime-local" id="write-off-date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-reference">Номер документа:</label>
+                        <input type="text" id="write-off-reference" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="write-off-notes">Примечания:</label>
+                        <textarea id="write-off-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('write-off-modal')">Отмена</button>
+                <button class="btn-danger" onclick="submitWriteOffForm()">Списать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно экспорта -->
+    <div id="export-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Экспорт данных о движениях</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="export-form" class="modal-form">
+                    <div class="form-group">
+                        <label for="export-format">Формат файла:</label>
+                        <select id="export-format" class="form-control" required>
+                            <option value="excel">Excel (.xlsx)</option>
+                            <option value="csv">CSV (.csv)</option>
+                            <option value="pdf">PDF (.pdf)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="export-date-range">Период:</label>
+                        <select id="export-date-range" class="form-control">
+                            <option value="all">Все данные</option>
+                            <option value="today">Сегодня</option>
+                            <option value="week">Текущая неделя</option>
+                            <option value="month">Текущий месяц</option>
+                            <option value="custom">Пользовательский период</option>
+                        </select>
+                    </div>
+                    
+                    <div id="export-custom-dates" style="display: none;">
+                        <div class="form-group">
+                            <label for="export-start-date">С:</label>
+                            <input type="date" id="export-start-date" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="export-end-date">По:</label>
+                            <input type="date" id="export-end-date" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="export-include">Включить в отчет:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="export-include-all" checked> Все поля</label>
+                            <label><input type="checkbox" id="export-include-dates"> Только даты и количества</label>
+                            <label><input type="checkbox" id="export-include-products"> Товары и локации</label>
+                            <label><input type="checkbox" id="export-include-values"> Стоимость движений</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('export-modal')">Отмена</button>
+                <button class="btn-primary" onclick="submitExportForm()">Экспортировать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты для обработки графиков -->
+    <script>
+        // Функция для скачивания графика как изображения
+        function downloadChart(chartId) {
+            const canvas = document.getElementById(chartId);
+            if (!canvas) {
+                console.error('График не найден:', chartId);
+                return;
+            }
+            
+            // Создаем ссылку для скачивания
+            const link = document.createElement('a');
+            link.download = `${chartId}-${new Date().toISOString().split('T')[0]}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Функция для увеличения графика в модальном окне
+        function expandChart(chartId) {
+            const canvas = document.getElementById(chartId);
+            if (!canvas) {
+                console.error('График не найден:', chartId);
+                return;
+            }
+            
+            // Создаем модальное окно для отображения графика
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            modal.style.zIndex = '9999';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            
+            // Создаем контейнер для графика
+            const container = document.createElement('div');
+            container.style.width = '80%';
+            container.style.height = '80%';
+            container.style.backgroundColor = 'white';
+            container.style.padding = '20px';
+            container.style.borderRadius = '8px';
+            container.style.display = 'flex';
+            container.style.flexDirection = 'column';
+            
+            // Заголовок модального окна
+            const header = document.createElement('div');
+            header.style.display = 'flex';
+            header.style.justifyContent = 'space-between';
+            header.style.marginBottom = '15px';
+            
+            const title = document.createElement('h3');
+            title.textContent = document.querySelector(`#${chartId}`).closest('.chart-card').querySelector('.chart-title').textContent;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.fontSize = '24px';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.onclick = function() {
+                document.body.removeChild(modal);
+            };
+            
+            header.appendChild(title);
+            header.appendChild(closeBtn);
+            
+            // Создаем новый canvas для графика
+            const chartContainer = document.createElement('div');
+            chartContainer.style.flex = '1';
+            
+            const newCanvas = document.createElement('canvas');
+            newCanvas.id = `expanded-${chartId}`;
+            chartContainer.appendChild(newCanvas);
+            
+            container.appendChild(header);
+            container.appendChild(chartContainer);
+            modal.appendChild(container);
+            
+            document.body.appendChild(modal);
+            
+            // Создаем копию графика
+            const originalChart = Chart.getChart(chartId);
+            if (originalChart) {
+                new Chart(newCanvas, {
+                    type: originalChart.config.type,
+                    data: JSON.parse(JSON.stringify(originalChart.data)),
+                    options: {
+                        ...JSON.parse(JSON.stringify(originalChart.config.options)),
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            
+            // Закрытие по клику вне графика
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

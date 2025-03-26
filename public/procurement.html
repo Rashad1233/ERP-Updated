@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurement Dashboard | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/procurement-common.css">
+    <link rel="stylesheet" href="css/procurement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> <span>Inventory</span></a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="active"><a href="procurement.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> <span>Purchase Requisition</span></a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> <span>Request for Quotation</span></a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> <span>Purchase Order</span></a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> <span>Suppliers</span></a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> <span>Contracts</span></a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> <span>Request to Supplier to quote</span></a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> <span>Quote to Customer</span></a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> <span>Sales Order</span></a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> <span>Customers</span></a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> <span>Sales contracts</span></a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Procurement Dashboard</h1>
+                <p>Overview of all procurement activities and metrics</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub Navigation -->
+        <div class="sub-nav">
+            <ul>
+                <li class="active"><a href="procurement.html">Dashboard</a></li>
+                <li><a href="requisitions.html">Requisitions</a></li>
+                <li><a href="rfq.html">RFQ</a></li>
+                <li><a href="purchase-orders.html">Purchase Orders</a></li>
+                <li><a href="contracts.html">Contracts</a></li>
+            </ul>
+        </div>
+
+        <div class="procurement-dashboard">
+            <!-- Date Range Filter -->
+            <div class="date-filter">
+                <div class="date-range">
+                    <div class="date-input-group">
+                        <label for="start-date">From:</label>
+                        <input type="date" id="start-date" value="2024-01-01">
+                    </div>
+                    <div class="date-input-group">
+                        <label for="end-date">To:</label>
+                        <input type="date" id="end-date" value="2024-12-31">
+                    </div>
+                    <button class="filter-button primary">Apply</button>
+                    <button class="filter-button secondary">Reset</button>
+                </div>
+                <div class="quick-filters">
+                    <button class="quick-filter active">YTD</button>
+                    <button class="quick-filter">Last Quarter</button>
+                    <button class="quick-filter">Last Month</button>
+                    <button class="quick-filter">Last Week</button>
+                </div>
+            </div>
+
+            <!-- Key Metrics Cards -->
+            <div class="metrics-panel">
+                <div class="metric-card">
+                    <div class="metric-card-header">
+                        <div class="metric-card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="metric-card-title">Total Requisitions</div>
+                    </div>
+                    <div class="metric-card-value">128</div>
+                    <div class="metric-card-trend positive">
+                        <i class="fas fa-arrow-up"></i> 12% from previous period
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-card-header">
+                        <div class="metric-card-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="metric-card-title">RFQs Issued</div>
+                    </div>
+                    <div class="metric-card-value">45</div>
+                    <div class="metric-card-trend positive">
+                        <i class="fas fa-arrow-up"></i> 8% from previous period
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-card-header">
+                        <div class="metric-card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="metric-card-title">Purchase Orders</div>
+                    </div>
+                    <div class="metric-card-value">86</div>
+                    <div class="metric-card-trend positive">
+                        <i class="fas fa-arrow-up"></i> 5% from previous period
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-card-header">
+                        <div class="metric-card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="metric-card-title">Total Spend</div>
+                    </div>
+                    <div class="metric-card-value">$1,842,650</div>
+                    <div class="metric-card-trend negative">
+                        <i class="fas fa-arrow-down"></i> 3% from previous period
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Procurement Spend by Category</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                            <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="spendByCategory"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Monthly Spend Trend</h3>
+                        <div class="chart-actions">
+                            <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                            <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="monthlySpendTrend"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Procurement Process Status -->
+            <div class="process-status-container">
+                <div class="container-header">
+                    <h3>Procurement Process Status</h3>
+                </div>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="step-info">
+                            <div class="step-title">Requisitions</div>
+                            <div class="step-count">32</div>
+                        </div>
+                        <div class="step-breakdown">
+                            <div class="breakdown-item">
+                                <span class="status-pending">Pending: 15</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-approved">Approved: 12</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-rejected">Rejected: 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="step-info">
+                            <div class="step-title">RFQs</div>
+                            <div class="step-count">18</div>
+                        </div>
+                        <div class="step-breakdown">
+                            <div class="breakdown-item">
+                                <span class="status-pending">Pending: 8</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-approved">Sent: 10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="step-info">
+                            <div class="step-title">Purchase Orders</div>
+                            <div class="step-count">25</div>
+                        </div>
+                        <div class="step-breakdown">
+                            <div class="breakdown-item">
+                                <span class="status-pending">Draft: 5</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-approved">Approved: 15</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-pending">Processing: 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="step-info">
+                            <div class="step-title">Receiving</div>
+                            <div class="step-count">20</div>
+                        </div>
+                        <div class="step-breakdown">
+                            <div class="breakdown-item">
+                                <span class="status-pending">In Transit: 8</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="status-approved">Received: 12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Spend by Category Chart
+            const spendByCategoryCtx = document.getElementById('spendByCategory').getContext('2d');
+            new Chart(spendByCategoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Raw Materials', 'Equipment', 'Services', 'Office Supplies', 'Others'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#0061f2',
+                            '#6610f2',
+                            '#00ac69',
+                            '#f4a100',
+                            '#e81500'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Monthly Spend Trend Chart
+            const monthlySpendTrendCtx = document.getElementById('monthlySpendTrend').getContext('2d');
+            new Chart(monthlySpendTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Monthly Spend',
+                        data: [300000, 450000, 320000, 380000, 420000, 290000],
+                        borderColor: '#0061f2',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(0,97,242,0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

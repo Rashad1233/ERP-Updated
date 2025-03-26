@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sales-common.css">
+    <link rel="stylesheet" href="css/sales.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+            <h2>ERP System</h2>
+            </div>
+            <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> <span>Inventory</span></a></li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="active"><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Sales Dashboard</h1>
+                <p>Overview of all sales activities and metrics</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">4</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+                </div>
+            </div>
+
+        <!-- Date Range Filter -->
+        <div class="date-filter">
+            <div class="date-range">
+                <div class="date-input-group">
+                    <label for="start-date">From:</label>
+                    <input type="date" id="start-date" value="2024-01-01">
+                </div>
+                <div class="date-input-group">
+                    <label for="end-date">To:</label>
+                    <input type="date" id="end-date" value="2024-12-31">
+                </div>
+                <button class="filter-button primary">Apply</button>
+                <button class="filter-button secondary">Reset</button>
+            </div>
+            <div class="quick-filters">
+                <button class="quick-filter active">YTD</button>
+                <button class="quick-filter">Last Quarter</button>
+                <button class="quick-filter">Last Month</button>
+                <button class="quick-filter">Last Week</button>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="metrics-panel">
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="metric-card-title">Total Orders</div>
+                </div>
+                <div class="metric-card-value">243</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 15% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="metric-card-title">Quotations Sent</div>
+                </div>
+                <div class="metric-card-value">67</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 8% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="metric-card-title">Total Revenue</div>
+                </div>
+                <div class="metric-card-value">$1,532,870</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 12% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="metric-card-title">New Clients</div>
+                </div>
+                <div class="metric-card-value">28</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 7% from previous period
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Sales by Product Category</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                        <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="salesByCategory"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Monthly Revenue Trend</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                        <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="monthlyRevenueTrend"></canvas>
+                </div>
+            </div>
+                </div>
+
+        <!-- Sales Process Status -->
+        <div class="process-status-container">
+            <div class="container-header">
+                <h3>Sales Process Status</h3>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="step-info">
+                        <div class="step-title">Quotations</div>
+                        <div class="step-count">42</div>
+                    </div>
+                    <div class="step-breakdown">
+                        <div class="breakdown-item">
+                            <span class="status-dot pending"></span>
+                            <span class="status-text">Pending: 24</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="status-dot approved"></span>
+                            <span class="status-text">Approved: 18</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-connector">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="step-info">
+                        <div class="step-title">Orders</div>
+                        <div class="step-count">35</div>
+                    </div>
+                    <div class="step-breakdown">
+                        <div class="breakdown-item">
+                            <span class="status-dot new"></span>
+                            <span class="status-text">New: 12</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="status-dot processing"></span>
+                            <span class="status-text">Processing: 23</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-connector">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="step-info">
+                        <div class="step-title">Shipping</div>
+                        <div class="step-count">28</div>
+                    </div>
+                    <div class="step-breakdown">
+                        <div class="breakdown-item">
+                            <span class="status-dot preparing"></span>
+                            <span class="status-text">Preparing: 16</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="status-dot shipped"></span>
+                            <span class="status-text">Shipped: 12</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-connector">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="step-info">
+                        <div class="step-title">Invoices</div>
+                        <div class="step-count">31</div>
+                            </div>
+                    <div class="step-breakdown">
+                        <div class="breakdown-item">
+                            <span class="status-dot sent"></span>
+                            <span class="status-text">Sent: 31</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="status-dot paid"></span>
+                            <span class="status-text">Paid: 19</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="recent-transactions">
+            <div class="container-header">
+                <h3>Recent Transactions</h3>
+                <a href="sales-orders.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ORD-2024-0467</td>
+                            <td>TechnoProServe Inc.</td>
+                            <td>2024-07-15</td>
+                            <td>$24,750</td>
+                            <td><span class="status-badge status-approved">Shipped</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD-2024-0466</td>
+                            <td>Global Tech Solutions</td>
+                            <td>2024-07-14</td>
+                            <td>$35,200</td>
+                            <td><span class="status-badge status-pending">Processing</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD-2024-0465</td>
+                            <td>Northwest Distributors</td>
+                            <td>2024-07-12</td>
+                            <td>$18,900</td>
+                            <td><span class="status-badge status-completed">Delivered</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD-2024-0464</td>
+                            <td>Smirnov Enterprises</td>
+                            <td>2024-07-10</td>
+                            <td>$9,250</td>
+                            <td><span class="status-badge status-completed">Delivered</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD-2024-0463</td>
+                            <td>Construction Materials Ltd</td>
+                            <td>2024-07-09</td>
+                            <td>$42,800</td>
+                            <td><span class="status-badge status-pending">Processing</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+        <!-- Top Selling Products -->
+        <div class="top-selling-products">
+            <div class="container-header">
+                <h3>Top Selling Products</h3>
+                <a href="products.html" class="view-all">View All Products <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="product-cards">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/laptop.jpg" alt="Laptop" onerror="this.src='images/product-placeholder.png'">
+                    </div>
+                    <div class="product-details">
+                        <h4 class="product-name">Dell XPS 15 Laptop</h4>
+                        <div class="product-stats">
+                            <div class="stat">
+                                <span class="stat-label">Units Sold:</span>
+                                <span class="stat-value">142</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Revenue:</span>
+                                <span class="stat-value">$198,800</span>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress to Target</span>
+                                <span>78%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/monitor.jpg" alt="Monitor" onerror="this.src='images/product-placeholder.png'">
+                    </div>
+                    <div class="product-details">
+                        <h4 class="product-name">27" 4K UHD Monitor</h4>
+                        <div class="product-stats">
+                            <div class="stat">
+                                <span class="stat-label">Units Sold:</span>
+                                <span class="stat-value">98</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Revenue:</span>
+                                <span class="stat-value">$86,240</span>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress to Target</span>
+                                <span>65%</span>
+                    </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 65%"></div>
+            </div>
+        </div>
+    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/server.jpg" alt="Server" onerror="this.src='images/product-placeholder.png'">
+                    </div>
+                    <div class="product-details">
+                        <h4 class="product-name">Dell PowerEdge Server</h4>
+                        <div class="product-stats">
+                            <div class="stat">
+                                <span class="stat-label">Units Sold:</span>
+                                <span class="stat-value">24</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Revenue:</span>
+                                <span class="stat-value">$144,000</span>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress to Target</span>
+                                <span>48%</span>
+            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 48%"></div>
+            </div>
+        </div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/sales.js"></script>
+    <script>
+        // Charts initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sales by Category Chart
+            const ctxCategory = document.getElementById('salesByCategory').getContext('2d');
+            new Chart(ctxCategory, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Laptops', 'Monitors', 'Servers', 'Peripherals', 'Software', 'Services'],
+                    datasets: [{
+                        data: [30, 22, 18, 15, 10, 5],
+                        backgroundColor: [
+                            '#4e73df',
+                            '#1cc88a',
+                            '#36b9cc',
+                            '#f6c23e',
+                            '#e74a3b',
+                            '#6f42c1'
+                        ],
+                        hoverBackgroundColor: [
+                            '#2e59d9',
+                            '#17a673',
+                            '#2c9faf',
+                            '#dda20a',
+                            '#be2617',
+                            '#5a3a9c'
+                        ],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    cutoutPercentage: 70,
+                }
+            });
+
+            // Monthly Revenue Trend Chart
+            const ctxMonthly = document.getElementById('monthlyRevenueTrend').getContext('2d');
+            new Chart(ctxMonthly, {
+                type: 'line',
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "Revenue",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: [125000, 132000, 145000, 138000, 158000, 167000, 172000, 168000, 176000, 184000, 191000, 185000],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 12
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                callback: function(value) {
+                                    return '$' + Number(value).toLocaleString();
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        intersect: false,
+                        mode: 'index',
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': $' + Number(tooltipItem.yLabel).toLocaleString();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

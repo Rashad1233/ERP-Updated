@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sales-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li class="active"><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Customers</h1>
+                <p>Manage your sales customers and their details</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">4</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary"><i class="fas fa-plus"></i> New Customer</button>
+            <button class="action-button secondary"><i class="fas fa-filter"></i> Filter</button>
+            <button class="action-button secondary"><i class="fas fa-download"></i> Export</button>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="metrics-panel">
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="metric-card-title">Total Customers</div>
+                </div>
+                <div class="metric-card-value">347</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 5% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="metric-card-title">New Customers</div>
+                </div>
+                <div class="metric-card-value">28</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 7% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="metric-card-title">Active Customers</div>
+                </div>
+                <div class="metric-card-value">215</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 3% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="metric-card-title">Avg. Revenue per Customer</div>
+                </div>
+                <div class="metric-card-value">$8,232</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 6% from previous period
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-container">
+            <div class="search-box">
+                <input type="text" placeholder="Search customers...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-options">
+                <select>
+                    <option value="">All Categories</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="retail">Retail</option>
+                    <option value="government">Government</option>
+                    <option value="non-profit">Non-Profit</option>
+                </select>
+                <select>
+                    <option value="">All Regions</option>
+                    <option value="north">North</option>
+                    <option value="south">South</option>
+                    <option value="east">East</option>
+                    <option value="west">West</option>
+                    <option value="international">International</option>
+                </select>
+                <select>
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="prospect">Prospect</option>
+                    <option value="blacklisted">Blacklisted</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Customers Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="select-all">
+                        </th>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Contact Person</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Total Orders</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1001</td>
+                        <td>TechnoProServe Inc.</td>
+                        <td>Corporate</td>
+                        <td>Alexander Mitchell</td>
+                        <td>+1 (555) 234-5678</td>
+                        <td>a.mitchell@technoproserve.com</td>
+                        <td>42</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1002</td>
+                        <td>Global Tech Solutions</td>
+                        <td>Corporate</td>
+                        <td>Sophia Chen</td>
+                        <td>+1 (555) 876-5432</td>
+                        <td>s.chen@globaltechsolutions.com</td>
+                        <td>35</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1003</td>
+                        <td>Northwest Distributors</td>
+                        <td>Corporate</td>
+                        <td>Michael Johnson</td>
+                        <td>+1 (555) 345-6789</td>
+                        <td>m.johnson@northwestdist.com</td>
+                        <td>27</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1004</td>
+                        <td>Smirnov Enterprises</td>
+                        <td>Corporate</td>
+                        <td>Elena Smirnova</td>
+                        <td>+7 (495) 123-4567</td>
+                        <td>e.smirnova@smirnovent.ru</td>
+                        <td>19</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1005</td>
+                        <td>Construction Materials Ltd.</td>
+                        <td>Corporate</td>
+                        <td>James Wilson</td>
+                        <td>+1 (555) 987-6543</td>
+                        <td>j.wilson@constructionmaterials.com</td>
+                        <td>23</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1006</td>
+                        <td>City of Springfield</td>
+                        <td>Government</td>
+                        <td>Robert Taylor</td>
+                        <td>+1 (555) 456-7890</td>
+                        <td>r.taylor@springfield.gov</td>
+                        <td>8</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1007</td>
+                        <td>First National Bank</td>
+                        <td>Corporate</td>
+                        <td>Jennifer Adams</td>
+                        <td>+1 (555) 567-8901</td>
+                        <td>j.adams@fnbank.com</td>
+                        <td>15</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="select-item">
+                        </td>
+                        <td>CUST-1008</td>
+                        <td>Riverside Health Network</td>
+                        <td>Non-Profit</td>
+                        <td>Sarah Peterson</td>
+                        <td>+1 (555) 678-9012</td>
+                        <td>s.peterson@riversidehealth.org</td>
+                        <td>12</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn lock-btn" title="Security"><i class="fas fa-lock"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button"><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-button">15</button>
+            <button class="pagination-button"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all checkbox functionality
+            const selectAllCheckbox = document.getElementById('select-all');
+            const itemCheckboxes = document.querySelectorAll('.select-item');
+            
+            selectAllCheckbox.addEventListener('change', function() {
+                itemCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+            
+            // Check if all items are selected and update the "select all" checkbox
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(itemCheckboxes).every(c => c.checked);
+                    const someChecked = Array.from(itemCheckboxes).some(c => c.checked);
+                    
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

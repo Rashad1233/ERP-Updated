@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Inventory Settings</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="css/inventory-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Подключение скриптов -->
+    <script src="js/iframe-helper.js"></script>
+    <script src="js/settings-manager.js"></script>
+    <script src="js/inventory-mode-switcher.js"></script>
+    
+    <style>
+        /* Tabs Styling */
+        .settings-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e1e8f0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .settings-tabs li {
+            margin-right: 5px;
+        }
+        
+        .settings-tabs a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f0f4f8;
+            border-radius: 6px 6px 0 0;
+            color: #747d8c;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .settings-tabs a i {
+            margin-right: 10px;
+            color: #4a6bdf;
+        }
+        
+        .settings-tabs li.active a {
+            background-color: #fff;
+            color: #2c3e50;
+            border-top: 3px solid #4a6bdf;
+            position: relative;
+            top: 1px;
+        }
+        
+        .settings-tab-content {
+            background-color: #fff;
+            border-radius: 0 6px 6px 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .settings-tab-pane {
+            display: none;
+            padding: 20px;
+        }
+        
+        .settings-tab-pane.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Settings Dashboard Cards */
+        .settings-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .settings-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .settings-card-header {
+            padding: 15px;
+            border-bottom: 1px solid #e1e8f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .settings-card-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+        
+        .settings-card-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .settings-card-body {
+            padding: 15px;
+        }
+        
+        .settings-card-stats {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .settings-card-stat {
+            text-align: center;
+        }
+        
+        .settings-card-stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .settings-card-stat-label {
+            font-size: 12px;
+            color: #747d8c;
+        }
+        
+        .settings-card-footer {
+            padding: 10px 15px;
+            border-top: 1px solid #e1e8f0;
+            text-align: center;
+        }
+        
+        .settings-card-footer a {
+            color: #4a6bdf;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="products.html"><i class="fas fa-box"></i> <span>Products</span></a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-box-open"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-clipboard-list"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-tasks"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> <span>Reports</span></a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Inventory Settings</h1>
+                <p>Configure inventory system parameters and classifications</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary"><i class="fas fa-save"></i> Save All Changes</button>
+                <div class="mode-switcher">
+                    <div class="mode-switcher-toggle">
+                        <i class="fas fa-th-large"></i>
+                        <span>UI Mode</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-pie"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-chart-bar"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-exchange-alt"></i> Movement Analysis</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="inventory-settings-unified.html">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Settings Dashboard -->
+        <div class="form-container">
+            <div class="settings-dashboard">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon inv-icon inv-icon-category">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <h3 class="settings-card-title">Categories</h3>
+                    </div>
+                    <div class="settings-card-body">
+                        <div class="settings-card-stats">
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">37</div>
+                                <div class="settings-card-stat-label">Total</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">5</div>
+                                <div class="settings-card-stat-label">Main Groups</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">3</div>
+                                <div class="settings-card-stat-label">Modified</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card-footer">
+                        <a href="#" onclick="showTab('categories')">Manage Categories <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon inv-icon inv-icon-location">
+                            <i class="fas fa-warehouse"></i>
+                        </div>
+                        <h3 class="settings-card-title">Locations</h3>
+                    </div>
+                    <div class="settings-card-body">
+                        <div class="settings-card-stats">
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">24</div>
+                                <div class="settings-card-stat-label">Total</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">4</div>
+                                <div class="settings-card-stat-label">Warehouses</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">18</div>
+                                <div class="settings-card-stat-label">Active</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card-footer">
+                        <a href="#" onclick="showTab('locations')">Manage Locations <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon inv-icon inv-icon-purple">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <h3 class="settings-card-title">Units of Measure</h3>
+                    </div>
+                    <div class="settings-card-body">
+                        <div class="settings-card-stats">
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">32</div>
+                                <div class="settings-card-stat-label">Total</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">8</div>
+                                <div class="settings-card-stat-label">Categories</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">42</div>
+                                <div class="settings-card-stat-label">Conversions</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card-footer">
+                        <a href="#" onclick="showTab('uom')">Manage Units <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <div class="settings-card-icon inv-icon inv-icon-settings">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h3 class="settings-card-title">General Settings</h3>
+                    </div>
+                    <div class="settings-card-body">
+                        <div class="settings-card-stats">
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">15</div>
+                                <div class="settings-card-stat-label">Parameters</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">4</div>
+                                <div class="settings-card-stat-label">Policies</div>
+                            </div>
+                            <div class="settings-card-stat">
+                                <div class="settings-card-stat-value">6</div>
+                                <div class="settings-card-stat-label">Workflows</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card-footer">
+                        <a href="#" onclick="showTab('general')">Manage Settings <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tabs -->
+            <ul class="settings-tabs">
+                <li class="active"><a href="#" onclick="showTab('categories')"><i class="fas fa-boxes"></i> Categories</a></li>
+                <li><a href="#" onclick="showTab('locations')"><i class="fas fa-warehouse"></i> Locations</a></li>
+                <li><a href="#" onclick="showTab('uom')"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                <li><a href="#" onclick="showTab('general')"><i class="fas fa-sliders-h"></i> General Settings</a></li>
+                <li><a href="#" onclick="showTab('templates')"><i class="fas fa-clipboard-list"></i> Templates</a></li>
+                <li><a href="#" onclick="showTab('import')"><i class="fas fa-file-import"></i> Import/Export</a></li>
+            </ul>
+            
+            <div class="settings-tab-content">
+                <!-- Categories Tab -->
+                <div class="settings-tab-pane active" id="categories-tab">
+                    <iframe src="inventory-settings-categories.html" frameborder="0" style="width: 100%; height: 600px; border: none; transition: height 0.3s;" id="categories-iframe"></iframe>
+                </div>
+                
+                <!-- Locations Tab -->
+                <div class="settings-tab-pane" id="locations-tab">
+                    <iframe src="inventory-settings-locations.html" frameborder="0" style="width: 100%; height: 600px; border: none; transition: height 0.3s;" id="locations-iframe"></iframe>
+                </div>
+                
+                <!-- UOM Tab -->
+                <div class="settings-tab-pane" id="uom-tab">
+                    <iframe src="inventory-settings-uom.html" frameborder="0" style="width: 100%; height: 600px; border: none; transition: height 0.3s;" id="uom-iframe"></iframe>
+                </div>
+                
+                <!-- General Settings Tab -->
+                <div class="settings-tab-pane" id="general-tab">
+                    <iframe src="inventory-settings-general.html" frameborder="0" style="width: 100%; height: 600px; border: none; transition: height 0.3s;" id="general-iframe"></iframe>
+                </div>
+                
+                <!-- Templates Tab -->
+                <div class="settings-tab-pane" id="templates-tab">
+                    <div class="form-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-clipboard-list"></i> Document Templates</h2>
+                            <div class="header-actions">
+                                <button class="btn-primary"><i class="fas fa-plus"></i> New Template</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Configure document templates for various inventory operations and reports.</p>
+                            
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Template Name</th>
+                                            <th>Document Type</th>
+                                            <th>Last Modified</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Stock Receipt Template</td>
+                                            <td>Receipt Document</td>
+                                            <td>12 Apr 2023</td>
+                                            <td><span class="status-badge status-active">Active</span></td>
+                                            <td class="actions-cell">
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                                <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                                <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Stock Transfer Form</td>
+                                            <td>Transfer Document</td>
+                                            <td>05 Mar 2023</td>
+                                            <td><span class="status-badge status-active">Active</span></td>
+                                            <td class="actions-cell">
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                                <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                                <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inventory Count Sheet</td>
+                                            <td>Count Document</td>
+                                            <td>18 Feb 2023</td>
+                                            <td><span class="status-badge status-active">Active</span></td>
+                                            <td class="actions-cell">
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                                <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                                <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Stock Adjustment Form</td>
+                                            <td>Adjustment Document</td>
+                                            <td>22 Jan 2023</td>
+                                            <td><span class="status-badge status-inactive">Draft</span></td>
+                                            <td class="actions-cell">
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                                <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                                <button class="action-btn"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Import/Export Tab -->
+                <div class="settings-tab-pane" id="import-tab">
+                    <div class="form-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-file-import"></i> Import/Export Settings</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3>Import Data</h3>
+                                    <p>Upload data files to import into your inventory system.</p>
+                                    
+                                    <div class="form-group">
+                                        <label>Select Data Type</label>
+                                        <select class="form-control">
+                                            <option>Product Categories</option>
+                                            <option>Storage Locations</option>
+                                            <option>Units of Measure</option>
+                                            <option>Product Data</option>
+                                            <option>Initial Stock Levels</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>File Format</label>
+                                        <select class="form-control">
+                                            <option>CSV</option>
+                                            <option>Excel (XLSX)</option>
+                                            <option>XML</option>
+                                            <option>JSON</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Upload File</label>
+                                        <div class="file-upload-container">
+                                            <input type="file" id="fileUpload" class="file-upload-input">
+                                            <label for="fileUpload" class="file-upload-label">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <span>Choose a file or drag it here</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <button class="btn-primary"><i class="fas fa-file-import"></i> Import Data</button>
+                                        <button class="btn-secondary"><i class="fas fa-download"></i> Download Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h3>Export Data</h3>
+                                    <p>Download your inventory configuration data.</p>
+                                    
+                                    <div class="form-group">
+                                        <label>Select Data Type</label>
+                                        <select class="form-control">
+                                            <option>All Configuration</option>
+                                            <option>Product Categories</option>
+                                            <option>Storage Locations</option>
+                                            <option>Units of Measure</option>
+                                            <option>Product Templates</option>
+                                            <option>Rule Configurations</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>File Format</label>
+                                        <select class="form-control">
+                                            <option>Excel (XLSX)</option>
+                                            <option>CSV</option>
+                                            <option>XML</option>
+                                            <option>JSON</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <input type="checkbox" id="includeMetadata" checked>
+                                            <label for="includeMetadata">Include metadata</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <input type="checkbox" id="includeRelated">
+                                            <label for="includeRelated">Include related data</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <button class="btn-primary"><i class="fas fa-file-export"></i> Export Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="import-history mt-4">
+                                <h3>Import History</h3>
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Data Type</th>
+                                                <th>Records</th>
+                                                <th>Status</th>
+                                                <th>User</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2023-04-10 10:32:45</td>
+                                                <td>Product Categories</td>
+                                                <td>42</td>
+                                                <td><span class="status-badge status-success">Completed</span></td>
+                                                <td>John Doe</td>
+                                                <td class="actions-cell">
+                                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                    <button class="action-btn"><i class="fas fa-undo"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2023-03-28 14:15:10</td>
+                                                <td>Storage Locations</td>
+                                                <td>18</td>
+                                                <td><span class="status-badge status-success">Completed</span></td>
+                                                <td>Jane Smith</td>
+                                                <td class="actions-cell">
+                                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                    <button class="action-btn"><i class="fas fa-undo"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle functionality
+            const toggleSidebar = document.querySelector('.toggle-sidebar');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            toggleSidebar.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+            
+            // Submenu toggle
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle('active');
+                });
+            });
+            
+            // Dropdown menu in the inventory navigation
+            const dropdownLinks = document.querySelectorAll('.inventory-menu > li > a');
+            
+            dropdownLinks.forEach(link => {
+                if (link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown-menu')) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const dropdownMenu = this.nextElementSibling;
+                        dropdownMenu.classList.toggle('show');
+                    });
+                }
+            });
+            
+            // Close dropdown menus when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdownMenus = document.querySelectorAll('.dropdown-menu.show');
+                dropdownMenus.forEach(menu => {
+                    const parentLi = menu.parentElement;
+                    const link = parentLi.querySelector('a');
+                    
+                    if (!link.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.remove('show');
+                    }
+                });
+            });
+
+            // Автоматически регулировать высоту iframe в зависимости от контента
+            function resizeIframe(iframe) {
+                if (iframe) {
+                    try {
+                        // Попытка получить высоту содержимого iframe
+                        setTimeout(() => {
+                            const height = iframe.contentWindow.document.body.scrollHeight;
+                            iframe.style.height = (height + 20) + 'px';
+                        }, 500); // Небольшая задержка для загрузки содержимого
+                    } catch (e) {
+                        console.error('Ошибка при изменении размера iframe:', e);
+                    }
+                }
+            }
+            
+            // Tab switching functionality
+            function showTab(tabName) {
+                // Hide all tab panes
+                const tabPanes = document.querySelectorAll('.settings-tab-pane');
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('active');
+                });
+                
+                // Remove active class from all tab links
+                const tabLinks = document.querySelectorAll('.settings-tabs li');
+                tabLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Show selected tab pane
+                const selectedPane = document.getElementById(tabName + '-tab');
+                if (selectedPane) {
+                    selectedPane.classList.add('active');
+                    
+                    // Resize iframe if present
+                    const iframe = selectedPane.querySelector('iframe');
+                    if (iframe) {
+                        resizeIframe(iframe);
+                    }
+                }
+                
+                // Add active class to selected tab link
+                const selectedLink = document.querySelector(`.settings-tabs li a[onclick="showTab('${tabName}')"]`).parentElement;
+                if (selectedLink) {
+                    selectedLink.classList.add('active');
+                }
+            }
+
+            // Глобализуем функцию showTab для доступа из HTML
+            window.showTab = showTab;
+            
+            // Изначально изменяем размер активного iframe
+            const activePane = document.querySelector('.settings-tab-pane.active');
+            if (activePane) {
+                const iframe = activePane.querySelector('iframe');
+                if (iframe) {
+                    iframe.onload = function() {
+                        resizeIframe(this);
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

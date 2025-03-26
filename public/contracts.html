@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contracts | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/procurement-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li class="active"><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Supplier Contracts</h1>
+                <p>Manage supplier contracts and agreements</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub Navigation -->
+        <div class="sub-nav">
+            <ul>
+                <li><a href="procurement.html">Dashboard</a></li>
+                <li><a href="requisitions.html">Requisitions</a></li>
+                <li><a href="rfq.html">RFQ</a></li>
+                <li><a href="purchase-orders.html">Purchase Orders</a></li>
+                <li class="active"><a href="contracts.html">Contracts</a></li>
+            </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary">
+                <i class="fas fa-plus"></i> Add New Contract
+            </button>
+            <button class="action-button secondary">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            <button class="action-button secondary">
+                <i class="fas fa-download"></i> Export
+            </button>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="statistics-panel">
+            <div class="stat-card pending">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="stat-card-title">Active Contracts</div>
+                </div>
+                <div class="stat-card-value">24</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div class="stat-card-title">Pending Review</div>
+                </div>
+                <div class="stat-card-value">5</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-card-title">Expiring Soon</div>
+                </div>
+                <div class="stat-card-value">8</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-card-title">Total Value</div>
+                </div>
+                <div class="stat-card-value">$3,452,890</div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search contracts...">
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Status:</div>
+                <select class="filter-control">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending Review</option>
+                    <option value="expired">Expired</option>
+                    <option value="terminated">Terminated</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Type:</div>
+                <select class="filter-control">
+                    <option value="all">All Types</option>
+                    <option value="purchase">Purchase</option>
+                    <option value="service">Service</option>
+                    <option value="lease">Lease</option>
+                    <option value="licensing">Licensing</option>
+                    <option value="maintenance">Maintenance</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Supplier:</div>
+                <select class="filter-control">
+                    <option value="all">All Suppliers</option>
+                    <option value="tech-solutions">Tech Solutions Inc.</option>
+                    <option value="office-supply">Office Supply Co.</option>
+                    <option value="software-solutions">Software Solutions Ltd</option>
+                    <option value="global-logistics">Global Logistics Partners</option>
+                </select>
+            </div>
+            <button class="filter-button primary">Apply</button>
+            <button class="filter-button secondary">Reset</button>
+        </div>
+
+        <!-- Action Button -->
+        <div class="action-bar">
+            <button class="btn-primary" id="newContractBtn">
+                <i class="fas fa-plus"></i> New Contract
+            </button>
+            <div class="dropdown">
+                <button class="btn-secondary dropdown-toggle">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" id="exportPDF"><i class="fas fa-file-pdf"></i> Export as PDF</a>
+                    <a href="#" id="exportExcel"><i class="fas fa-file-excel"></i> Export as Excel</a>
+                    <a href="#" id="exportCSV"><i class="fas fa-file-csv"></i> Export as CSV</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contracts Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Contract ID</th>
+                        <th>Title</th>
+                        <th>Supplier</th>
+                        <th>Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CNT-001</td>
+                        <td>Hardware Supply Agreement</td>
+                        <td>Tech Solutions Inc.</td>
+                        <td>Purchase</td>
+                        <td>05/01/2023</td>
+                        <td>04/30/2024</td>
+                        <td>$250,000</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CNT-002</td>
+                        <td>Software Licensing Agreement</td>
+                        <td>Software Solutions Ltd</td>
+                        <td>Licensing</td>
+                        <td>03/15/2023</td>
+                        <td>03/14/2025</td>
+                        <td>$175,000</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CNT-003</td>
+                        <td>Office Supplies Framework</td>
+                        <td>Office Supply Co.</td>
+                        <td>Purchase</td>
+                        <td>01/01/2023</td>
+                        <td>12/31/2023</td>
+                        <td>$95,000</td>
+                        <td><span class="status-badge status-rejected">Expiring Soon</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CNT-004</td>
+                        <td>IT Support Services</td>
+                        <td>Tech Solutions Inc.</td>
+                        <td>Service</td>
+                        <td>06/01/2023</td>
+                        <td>05/31/2024</td>
+                        <td>$120,000</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CNT-005</td>
+                        <td>Data Center Hosting</td>
+                        <td>Global Logistics Partners</td>
+                        <td>Service</td>
+                        <td>04/15/2023</td>
+                        <td>04/14/2025</td>
+                        <td>$350,000</td>
+                        <td><span class="status-badge status-pending">Pending Review</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button" id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- New Contract Modal -->
+    <div class="modal" id="contractModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>New Contract</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="contractForm">
+                    <div class="form-tabs">
+                        <button type="button" class="form-tab active" data-tab="general-info">General Info</button>
+                        <button type="button" class="form-tab" data-tab="details">Contract Details</button>
+                        <button type="button" class="form-tab" data-tab="attachments">Documents</button>
+                        <button type="button" class="form-tab" data-tab="approval">Approval Process</button>
+                    </div>
+                    
+                    <div class="form-tab-content active" id="general-info">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractTitle">Contract Title*</label>
+                                <input type="text" id="contractTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractType">Contract Type*</label>
+                                <select id="contractType" required>
+                                    <option value="">Select Contract Type</option>
+                                    <option value="purchase">Purchase</option>
+                                    <option value="service">Service</option>
+                                    <option value="lease">Lease</option>
+                                    <option value="licensing">Licensing</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractSupplier">Supplier*</label>
+                                <select id="contractSupplier" required>
+                                    <option value="">Select Supplier</option>
+                                    <option value="tech-solutions">Tech Solutions Inc.</option>
+                                    <option value="office-supply">Office Supply Co.</option>
+                                    <option value="software-solutions">Software Solutions Ltd</option>
+                                    <option value="global-logistics">Global Logistics Partners</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractDepartment">Department*</label>
+                                <select id="contractDepartment" required>
+                                    <option value="">Select Department</option>
+                                    <option value="it">IT</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="operations">Operations</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="hr">Human Resources</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractStart">Start Date*</label>
+                                <input type="date" id="contractStart" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractEnd">End Date*</label>
+                                <input type="date" id="contractEnd" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractValue">Contract Value*</label>
+                                <input type="number" id="contractValue" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractCurrency">Currency*</label>
+                                <select id="contractCurrency" required>
+                                    <option value="usd">USD</option>
+                                    <option value="eur">EUR</option>
+                                    <option value="gbp">GBP</option>
+                                    <option value="cad">CAD</option>
+                                    <option value="aud">AUD</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractOwner">Contract Owner*</label>
+                                <input type="text" id="contractOwner" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractStatus">Status*</label>
+                                <select id="contractStatus" required>
+                                    <option value="draft">Draft</option>
+                                    <option value="pending">Pending Review</option>
+                                    <option value="active">Active</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="terminated">Terminated</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contractDescription">Contract Description</label>
+                            <textarea id="contractDescription" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="details">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="paymentTerms">Payment Terms*</label>
+                                <select id="paymentTerms" required>
+                                    <option value="">Select Payment Terms</option>
+                                    <option value="net15">Net 15</option>
+                                    <option value="net30">Net 30</option>
+                                    <option value="net45">Net 45</option>
+                                    <option value="net60">Net 60</option>
+                                    <option value="immediate">Immediate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentFrequency">Payment Frequency</label>
+                                <select id="paymentFrequency">
+                                    <option value="one-time">One-time</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="annually">Annually</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="autoRenewal">Auto Renewal</label>
+                                <select id="autoRenewal">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="renewalNotice">Notice Period (days)</label>
+                                <input type="number" id="renewalNotice" min="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="terminationClause">Termination Clause</label>
+                                <textarea id="terminationClause" rows="2"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="legalReviewer">Legal Reviewer</label>
+                                <input type="text" id="legalReviewer">
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewDate">Legal Review Date</label>
+                                <input type="date" id="reviewDate">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contractNotes">Special Terms & Conditions</label>
+                                <textarea id="contractNotes" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="attachments">
+                        <div class="form-group">
+                            <label for="contractDocument">Contract Document*</label>
+                            <div class="file-upload-container">
+                                <input type="file" id="contractDocument" class="file-upload-input" required>
+                                <div class="file-upload-button">
+                                    <i class="fas fa-upload"></i> Upload Contract
+                                </div>
+                                <div class="file-upload-text">No file selected</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Supporting Documents</label>
+                            <div class="file-upload-container">
+                                <input type="file" id="supportingDocuments" class="file-upload-input" multiple>
+                                <div class="file-upload-button">
+                                    <i class="fas fa-upload"></i> Upload Documents
+                                </div>
+                                <div class="file-upload-text">No files selected</div>
+                            </div>
+                        </div>
+                        
+                        <div class="uploaded-files">
+                            <h4>Uploaded Documents</h4>
+                            <div class="no-files-message">No documents uploaded yet</div>
+                            <ul class="document-list" id="documentList">
+                                <!-- Documents will be listed here -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="approval">
+                        <div class="form-group">
+                            <label for="approvalWorkflow">Approval Workflow*</label>
+                            <select id="approvalWorkflow" required>
+                                <option value="">Select Workflow</option>
+                                <option value="standard">Standard Approval</option>
+                                <option value="expedited">Expedited Approval</option>
+                                <option value="high-value">High Value Approval</option>
+                            </select>
+                        </div>
+                        
+                        <div class="approval-steps" id="approvalSteps">
+                            <h4>Approval Steps</h4>
+                            
+                            <div class="approval-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <div class="step-title">Department Manager</div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="approver1">Approver</label>
+                                            <select name="approver1" class="approver-select">
+                                                <option value="">Select Approver</option>
+                                                <option value="john-smith">John Smith</option>
+                                                <option value="sarah-johnson">Sarah Johnson</option>
+                                                <option value="david-brown">David Brown</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="approval-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <div class="step-title">Finance Director</div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="approver2">Approver</label>
+                                            <select name="approver2" class="approver-select">
+                                                <option value="">Select Approver</option>
+                                                <option value="michael-wilson">Michael Wilson</option>
+                                                <option value="jennifer-parker">Jennifer Parker</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="approval-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <div class="step-title">Legal Review</div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="approver3">Approver</label>
+                                            <select name="approver3" class="approver-select">
+                                                <option value="">Select Approver</option>
+                                                <option value="robert-thompson">Robert Thompson</option>
+                                                <option value="elizabeth-harris">Elizabeth Harris</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="approval-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <div class="step-title">CEO</div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="approver4">Approver</label>
+                                            <select name="approver4" class="approver-select">
+                                                <option value="">Select Approver</option>
+                                                <option value="james-williams">James Williams</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notifyEmails">Notification Emails (comma separated)</label>
+                            <input type="text" id="notifyEmails" placeholder="email1@example.com, email2@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions form-submit-actions">
+                        <button type="button" id="cancelContractBtn" class="btn-secondary">Cancel</button>
+                        <button type="button" id="saveAsDraftBtn" class="btn-secondary">Save as Draft</button>
+                        <button type="submit" class="btn-primary">Submit Contract</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Contract Modal -->
+    <div class="modal" id="viewContractModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>Contract Details</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="contractDetailsContent">
+                <!-- Contract details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeViewBtn">Close</button>
+                <button class="btn-primary" id="editViewBtn">Edit</button>
+                <button class="btn-secondary" id="downloadBtn"><i class="fas fa-download"></i> Download</button>
+                <button class="btn-danger" id="terminateBtn">Terminate Contract</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/contracts.js"></script>
+</body>
+</html> 

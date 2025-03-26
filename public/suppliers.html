@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suppliers | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/procurement-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li class="active"><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Suppliers</h1>
+                <p>Manage supplier information and relationships</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub Navigation -->
+        <div class="sub-nav">
+            <ul>
+                <li><a href="procurement.html">Dashboard</a></li>
+                <li><a href="requisitions.html">Requisitions</a></li>
+                <li><a href="rfq.html">RFQ</a></li>
+                <li><a href="purchase-orders.html">Purchase Orders</a></li>
+                <li><a href="contracts.html">Contracts</a></li>
+            </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary">
+                <i class="fas fa-plus"></i> Add New Supplier
+            </button>
+            <button class="action-button secondary">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            <button class="action-button secondary">
+                <i class="fas fa-download"></i> Export
+            </button>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="statistics-panel">
+            <div class="stat-card pending">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-card-title">Total Suppliers</div>
+                </div>
+                <div class="stat-card-value">48</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-card-title">Preferred</div>
+                </div>
+                <div class="stat-card-value">12</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-card-title">On Hold</div>
+                </div>
+                <div class="stat-card-value">3</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-card-title">YTD Spend</div>
+                </div>
+                <div class="stat-card-value">$1,875,420</div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search suppliers...">
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Status:</div>
+                <select class="filter-control">
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="preferred">Preferred</option>
+                    <option value="on-hold">On Hold</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Category:</div>
+                <select class="filter-control">
+                    <option value="all">All Categories</option>
+                    <option value="hardware">Hardware</option>
+                    <option value="software">Software</option>
+                    <option value="services">Services</option>
+                    <option value="consumables">Consumables</option>
+                    <option value="office">Office Supplies</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Country:</div>
+                <select class="filter-control">
+                    <option value="all">All Countries</option>
+                    <option value="us">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="ca">Canada</option>
+                    <option value="au">Australia</option>
+                </select>
+            </div>
+            <button class="filter-button primary">Apply</button>
+            <button class="filter-button secondary">Reset</button>
+        </div>
+
+        <!-- Action Button -->
+        <div class="action-bar">
+            <button class="btn-primary" id="newSupplierBtn">
+                <i class="fas fa-plus"></i> New Supplier
+            </button>
+            <div class="dropdown">
+                <button class="btn-secondary dropdown-toggle">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" id="exportPDF"><i class="fas fa-file-pdf"></i> Export as PDF</a>
+                    <a href="#" id="exportExcel"><i class="fas fa-file-excel"></i> Export as Excel</a>
+                    <a href="#" id="exportCSV"><i class="fas fa-file-csv"></i> Export as CSV</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suppliers Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Supplier ID</th>
+                        <th>Company Name</th>
+                        <th>Category</th>
+                        <th>Country</th>
+                        <th>Contact Person</th>
+                        <th>Email/Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SUP-001</td>
+                        <td>Tech Solutions Inc.</td>
+                        <td>Hardware</td>
+                        <td>United States</td>
+                        <td>John Miller</td>
+                        <td>j.miller@techsolutions.com<br>+1 (555) 123-4567</td>
+                        <td><span class="status-badge status-approved">Preferred</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn orders-btn" title="Orders"><i class="fas fa-shopping-cart"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SUP-002</td>
+                        <td>Office Supply Co.</td>
+                        <td>Office Supplies</td>
+                        <td>Canada</td>
+                        <td>Sarah Johnson</td>
+                        <td>sarah@officesupply.com<br>+1 (555) 234-5678</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn orders-btn" title="Orders"><i class="fas fa-shopping-cart"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SUP-003</td>
+                        <td>Software Solutions Ltd</td>
+                        <td>Software</td>
+                        <td>United Kingdom</td>
+                        <td>Michael Brown</td>
+                        <td>michael@softwaresolutions.com<br>+44 (20) 1234-5678</td>
+                        <td><span class="status-badge status-approved">Preferred</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn orders-btn" title="Orders"><i class="fas fa-shopping-cart"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SUP-004</td>
+                        <td>Global Logistics Partners</td>
+                        <td>Services</td>
+                        <td>Australia</td>
+                        <td>Emily Davis</td>
+                        <td>emily@globallogistics.com<br>+61 (2) 9876-5432</td>
+                        <td><span class="status-badge status-rejected">On Hold</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn orders-btn" title="Orders"><i class="fas fa-shopping-cart"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SUP-005</td>
+                        <td>Manufacturing Experts Inc.</td>
+                        <td>Hardware</td>
+                        <td>United States</td>
+                        <td>Robert Wilson</td>
+                        <td>robert@manufacturingexperts.com<br>+1 (555) 987-6543</td>
+                        <td><span class="status-badge status-approved">Active</span></td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn orders-btn" title="Orders"><i class="fas fa-shopping-cart"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button" id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- New Supplier Modal -->
+    <div class="modal" id="supplierModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>New Supplier</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="supplierForm">
+                    <div class="form-tabs">
+                        <button type="button" class="form-tab active" data-tab="general-info">General Info</button>
+                        <button type="button" class="form-tab" data-tab="contacts">Contacts</button>
+                        <button type="button" class="form-tab" data-tab="financial">Financial</button>
+                        <button type="button" class="form-tab" data-tab="products">Products & Services</button>
+                    </div>
+                    
+                    <div class="form-tab-content active" id="general-info">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyName">Company Name*</label>
+                                <input type="text" id="companyName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplierCategory">Category*</label>
+                                <select id="supplierCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="hardware">Hardware</option>
+                                    <option value="software">Software</option>
+                                    <option value="services">Services</option>
+                                    <option value="consumables">Consumables</option>
+                                    <option value="office">Office Supplies</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taxId">Tax ID/VAT Number</label>
+                                <input type="text" id="taxId">
+                            </div>
+                            <div class="form-group">
+                                <label for="supplierStatus">Status*</label>
+                                <select id="supplierStatus" required>
+                                    <option value="active">Active</option>
+                                    <option value="preferred">Preferred</option>
+                                    <option value="on-hold">On Hold</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address1">Address Line 1*</label>
+                                <input type="text" id="address1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address2">Address Line 2</label>
+                                <input type="text" id="address2">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City*</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State/Province*</label>
+                                <input type="text" id="state" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code*</label>
+                                <input type="text" id="postalCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country*</label>
+                                <select id="country" required>
+                                    <option value="">Select Country</option>
+                                    <option value="us">United States</option>
+                                    <option value="uk">United Kingdom</option>
+                                    <option value="ca">Canada</option>
+                                    <option value="au">Australia</option>
+                                    <option value="de">Germany</option>
+                                    <option value="fr">France</option>
+                                    <option value="jp">Japan</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="url" id="website">
+                            </div>
+                            <div class="form-group">
+                                <label for="supplierSince">Supplier Since</label>
+                                <input type="date" id="supplierSince">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="contacts">
+                        <div class="contact-list" id="contactList">
+                            <div class="contact-item">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactName">Name*</label>
+                                        <input type="text" name="contactName[]" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactTitle">Title*</label>
+                                        <input type="text" name="contactTitle[]" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactEmail">Email*</label>
+                                        <input type="email" name="contactEmail[]" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactPhone">Phone*</label>
+                                        <input type="tel" name="contactPhone[]" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactDepartment">Department</label>
+                                        <select name="contactDepartment[]">
+                                            <option value="sales">Sales</option>
+                                            <option value="support">Support</option>
+                                            <option value="accounting">Accounting</option>
+                                            <option value="logistics">Logistics</option>
+                                            <option value="management">Management</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactPrimary">Primary Contact</label>
+                                        <input type="checkbox" name="contactPrimary[]" class="toggle-switch">
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-actions">
+                                    <button type="button" class="btn-icon remove-contact"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" id="addContactBtn" class="btn-secondary">
+                                <i class="fas fa-plus"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="financial">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="paymentTerms">Payment Terms*</label>
+                                <select id="paymentTerms" required>
+                                    <option value="">Select Payment Terms</option>
+                                    <option value="net15">Net 15</option>
+                                    <option value="net30">Net 30</option>
+                                    <option value="net45">Net 45</option>
+                                    <option value="net60">Net 60</option>
+                                    <option value="immediate">Immediate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="currency">Currency*</label>
+                                <select id="currency" required>
+                                    <option value="usd">USD</option>
+                                    <option value="eur">EUR</option>
+                                    <option value="gbp">GBP</option>
+                                    <option value="cad">CAD</option>
+                                    <option value="aud">AUD</option>
+                                    <option value="jpy">JPY</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bankName">Bank Name</label>
+                                <input type="text" id="bankName">
+                            </div>
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number</label>
+                                <input type="text" id="accountNumber">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="creditLimit">Credit Limit</label>
+                                <input type="number" id="creditLimit" min="0" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="taxRate">Tax Rate (%)</label>
+                                <input type="number" id="taxRate" min="0" max="100" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="products">
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="productCategories">Product Categories</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-computers" name="productCategories[]" value="computers">
+                                        <label for="category-computers">Computers & Laptops</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-peripherals" name="productCategories[]" value="peripherals">
+                                        <label for="category-peripherals">Peripherals</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-networking" name="productCategories[]" value="networking">
+                                        <label for="category-networking">Networking Equipment</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-software" name="productCategories[]" value="software">
+                                        <label for="category-software">Software</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-office" name="productCategories[]" value="office">
+                                        <label for="category-office">Office Supplies</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="category-furniture" name="productCategories[]" value="furniture">
+                                        <label for="category-furniture">Furniture</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="leadTime">Average Lead Time (days)</label>
+                            <input type="number" id="leadTime" min="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="minOrderAmount">Minimum Order Amount</label>
+                            <input type="number" id="minOrderAmount" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productNotes">Notes on Products/Services</label>
+                            <textarea id="productNotes" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions form-submit-actions">
+                        <button type="button" id="cancelSupplierBtn" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Supplier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Supplier Modal -->
+    <div class="modal" id="viewSupplierModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>Supplier Details</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="supplierDetailsContent">
+                <!-- Supplier details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeViewBtn">Close</button>
+                <button class="btn-primary" id="editViewBtn">Edit</button>
+                <button class="btn-danger" id="deactivateBtn">Deactivate</button>
+                <button class="btn-secondary" id="orderHistoryBtn"><i class="fas fa-history"></i> Order History</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/suppliers.js"></script>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Stock Level History</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-cubes"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-dolly-flatbed"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-calculator"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1><i class="fas fa-chart-line"></i> Stock Level History</h1>
+                <p>Analyze historical inventory stock levels and trends</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu show">
+                        <li class="active"><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Filter Section -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-filter"></i> Фильтры</h2>
+                <button class="btn-default"><i class="fas fa-redo"></i> Сбросить</button>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Категория</label>
+                        <select id="productCategory">
+                            <option value="">Все категории</option>
+                            <option value="metals">Металлы</option>
+                            <option value="plastics">Пластики</option>
+                            <option value="electronics">Электроника</option>
+                            <option value="chemicals">Химикаты</option>
+                            <option value="tools">Инструменты</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productGroup">Группа товаров</label>
+                        <select id="productGroup">
+                            <option value="">Все группы</option>
+                            <option value="raw">Сырье</option>
+                            <option value="components">Компоненты</option>
+                            <option value="finished">Готовая продукция</option>
+                            <option value="packaging">Упаковка</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timePeriod">Период</label>
+                        <select id="timePeriod">
+                            <option value="month">Текущий месяц</option>
+                            <option value="quarter">Текущий квартал</option>
+                            <option value="halfyear" selected>Полгода</option>
+                            <option value="year">Год</option>
+                            <option value="custom">Выбрать период</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Склад</label>
+                        <select id="location">
+                            <option value="">Все склады</option>
+                            <option value="main" selected>Основной склад</option>
+                            <option value="secondary">Вторичный склад</option>
+                            <option value="production">Производственный склад</option>
+                            <option value="shipping">Зона отгрузки</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchProduct">Поиск товара</label>
+                        <div class="search-container">
+                            <input type="text" id="searchProduct" placeholder="Введите название или SKU товара...">
+                            <button class="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="viewType">Вид отображения</label>
+                        <select id="viewType">
+                            <option value="daily">По дням</option>
+                            <option value="weekly" selected>По неделям</option>
+                            <option value="monthly">По месяцам</option>
+                            <option value="quarterly">По кварталам</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-primary"><i class="fas fa-search"></i> Применить фильтры</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chart -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-line"></i> Динамика уровня запасов</h2>
+                <div class="chart-options">
+                    <button class="btn-chart active" data-period="day">День</button>
+                    <button class="btn-chart" data-period="week">Неделя</button>
+                    <button class="btn-chart" data-period="month">Месяц</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="main-chart-container">
+                    <canvas id="mainStockChart" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Level By Category -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-pie"></i> По категориям</h3>
+                <div class="chart-content">
+                    <canvas id="categoryStockChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3><i class="fas fa-chart-bar"></i> Топ-10 товаров</h3>
+                <div class="chart-content">
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historic Data Table -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-history"></i> Исторические данные</h2>
+                <button class="btn-default"><i class="fas fa-download"></i> Скачать CSV</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Категория</th>
+                                <th>Товар</th>
+                                <th>Начальный остаток</th>
+                                <th>Приход</th>
+                                <th>Расход</th>
+                                <th>Конечный остаток</th>
+                                <th>Склад</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01.10.2023</td>
+                                <td>Металлы</td>
+                                <td>Алюминиевый профиль A1001</td>
+                                <td>250</td>
+                                <td>+50</td>
+                                <td>-30</td>
+                                <td>270</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>01.10.2023</td>
+                                <td>Пластики</td>
+                                <td>Пластиковый корпус P-200</td>
+                                <td>180</td>
+                                <td>+0</td>
+                                <td>-25</td>
+                                <td>155</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>01.10.2023</td>
+                                <td>Электроника</td>
+                                <td>Плата управления E-500</td>
+                                <td>120</td>
+                                <td>+40</td>
+                                <td>-15</td>
+                                <td>145</td>
+                                <td>Производственный</td>
+                            </tr>
+                            <tr>
+                                <td>02.10.2023</td>
+                                <td>Металлы</td>
+                                <td>Алюминиевый профиль A1001</td>
+                                <td>270</td>
+                                <td>+0</td>
+                                <td>-40</td>
+                                <td>230</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>02.10.2023</td>
+                                <td>Пластики</td>
+                                <td>Пластиковый корпус P-200</td>
+                                <td>155</td>
+                                <td>+100</td>
+                                <td>-35</td>
+                                <td>220</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>02.10.2023</td>
+                                <td>Электроника</td>
+                                <td>Плата управления E-500</td>
+                                <td>145</td>
+                                <td>+0</td>
+                                <td>-25</td>
+                                <td>120</td>
+                                <td>Производственный</td>
+                            </tr>
+                            <tr>
+                                <td>03.10.2023</td>
+                                <td>Металлы</td>
+                                <td>Алюминиевый профиль A1001</td>
+                                <td>230</td>
+                                <td>+80</td>
+                                <td>-45</td>
+                                <td>265</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>03.10.2023</td>
+                                <td>Пластики</td>
+                                <td>Пластиковый корпус P-200</td>
+                                <td>220</td>
+                                <td>+0</td>
+                                <td>-40</td>
+                                <td>180</td>
+                                <td>Основной</td>
+                            </tr>
+                            <tr>
+                                <td>03.10.2023</td>
+                                <td>Электроника</td>
+                                <td>Плата управления E-500</td>
+                                <td>120</td>
+                                <td>+60</td>
+                                <td>-30</td>
+                                <td>150</td>
+                                <td>Производственный</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <div class="pagination">
+                                        <span>Страница 1 из 12</span>
+                                        <div class="pagination-controls">
+                                            <button disabled><i class="fas fa-chevron-left"></i></button>
+                                            <button class="active">1</button>
+                                            <button>2</button>
+                                            <button>3</button>
+                                            <button>4</button>
+                                            <button>5</button>
+                                            <button><i class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение библиотеки Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('collapsed');
+            });
+
+            // Initialize Charts
+            initializeMainChart();
+            initializeCategoryChart();
+            initializeTopProductsChart();
+        });
+
+        function initializeMainChart() {
+            const ctx = document.getElementById('mainStockChart').getContext('2d');
+            const mainStockChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                    datasets: [{
+                        label: 'Металлы',
+                        data: [250, 280, 300, 320, 290, 310, 350, 330, 290, 320, 340, 360],
+                        borderColor: '#4285f4',
+                        backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Пластики',
+                        data: [180, 200, 190, 210, 230, 220, 200, 210, 240, 230, 250, 260],
+                        borderColor: '#34a853',
+                        backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Электроника',
+                        data: [120, 140, 150, 130, 160, 170, 180, 175, 190, 200, 210, 220],
+                        borderColor: '#ea4335',
+                        backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Количество (шт.)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Период'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart period buttons
+            document.querySelectorAll('.btn-chart').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.btn-chart').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update chart data based on selected period
+                    const period = this.getAttribute('data-period');
+                    updateChartData(mainStockChart, period);
+                });
+            });
+        }
+
+        function updateChartData(chart, period) {
+            let labels;
+            let dataMultiplier;
+            
+            // Set labels and data multiplier based on period
+            switch(period) {
+                case 'day':
+                    labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+                    dataMultiplier = 0.7;
+                    break;
+                case 'week':
+                    labels = ['Нед 1', 'Нед 2', 'Нед 3', 'Нед 4'];
+                    dataMultiplier = 1.2;
+                    break;
+                case 'month':
+                    labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+                    dataMultiplier = 1.5;
+                    break;
+                default:
+                    labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+                    dataMultiplier = 1;
+            }
+            
+            // Update chart data
+            chart.data.labels = labels;
+            
+            // Update each dataset with new random data
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = labels.map(() => Math.floor(Math.random() * 200 * dataMultiplier) + 100);
+            });
+            
+            chart.update();
+        }
+
+        function initializeCategoryChart() {
+            const ctx = document.getElementById('categoryStockChart').getContext('2d');
+            const categoryStockChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Металлы', 'Пластики', 'Электроника', 'Химикаты', 'Инструменты'],
+                    datasets: [{
+                        label: 'Объем запасов по категориям',
+                        data: [35, 25, 20, 10, 10],
+                        backgroundColor: [
+                            '#4285f4', // Google Blue
+                            '#34a853', // Google Green
+                            '#ea4335', // Google Red
+                            '#fbbc05', // Google Yellow
+                            '#673ab7'  // Purple
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeTopProductsChart() {
+            const ctx = document.getElementById('topProductsChart').getContext('2d');
+            const topProductsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Алюм. проф. A1001', 'Пласт. корпус P-200', 'Плата E-500', 'Крепеж M100-2', 'Сталь S355', 'Подшип. SKF 6205', 'Упаковка P-1000', 'Плата E-600', 'Медь C101', 'Краска P-500'],
+                    datasets: [{
+                        label: 'Текущие запасы',
+                        data: [270, 180, 150, 450, 750, 120, 300, 90, 200, 120],
+                        backgroundColor: '#4285f4', // Google Blue
+                        borderColor: '#3367d6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Количество (шт.)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Товары'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

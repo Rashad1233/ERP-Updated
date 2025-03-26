@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Inventory Categories</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="css/inventory-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Подключение скриптов -->
+    <script src="js/iframe-helper.js"></script>
+    <script src="js/inventory-common.js"></script>
+    <script src="js/inventory-mode-switcher.js"></script>
+    
+    <style>
+        /* Enhanced Category Page Styles */
+        .summary-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-card h3 {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 10px 0;
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .metric-info {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        /* Category Tree Styles */
+        .categories-tree {
+            margin: 10px 0;
+        }
+        
+        .tree-root {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tree-children {
+            list-style: none;
+            padding-left: 30px;
+            margin: 0;
+        }
+        
+        .tree-item {
+            margin: 5px 0;
+        }
+        
+        .tree-item-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            transition: all 0.2s;
+        }
+        
+        .tree-item-header:hover {
+            background-color: #e9ecef;
+        }
+        
+        .toggle-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .invisible {
+            visibility: hidden;
+        }
+        
+        .category-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            border-radius: 6px;
+            background-color: rgba(74, 107, 223, 0.1);
+            color: #4a6bdf;
+        }
+        
+        .category-name {
+            flex-grow: 1;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .category-count {
+            color: #6c757d;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .tree-actions {
+            display: flex;
+            gap: 5px;
+            opacity: 0.2;
+            transition: opacity 0.2s;
+        }
+        
+        .tree-item-header:hover .tree-actions {
+            opacity: 1;
+        }
+        
+        .btn-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-icon:hover {
+            background-color: #e9ecef;
+            color: #4a6bdf;
+        }
+        
+        /* Tree Item State Management */
+        .tree-children {
+            display: none;
+        }
+        
+        .tree-item.expanded > .tree-children {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Form Styling */
+        .category-form {
+            padding: 10px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 15px -10px;
+        }
+        
+        .form-group {
+            flex: 1 0 250px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+        
+        .full-width {
+            flex: 1 0 100%;
+        }
+        
+        .checkbox-group {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4a6bdf;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 107, 223, 0.1);
+        }
+        
+        .form-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .form-actions {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .form-actions button {
+            margin-right: 10px;
+        }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #e9ecef;
+            margin: 20px 0;
+        }
+        
+        /* Status indicator for categories */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .status-active {
+            background-color: rgba(46, 184, 115, 0.1);
+            color: #2eb873;
+        }
+        
+        .status-inactive {
+            background-color: rgba(116, 125, 140, 0.1);
+            color: #747d8c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="products.html"><i class="fas fa-box"></i> <span>Products</span></a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-box-open"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-clipboard-list"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-tasks"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> <span>Reports</span></a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Inventory Categories</h1>
+                <p>Manage product categories and classification system</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary"><i class="fas fa-plus"></i> Add Category</button>
+                <div class="mode-switcher">
+                    <div class="mode-switcher-toggle">
+                        <i class="fas fa-th-large"></i>
+                        <span>UI Mode</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-pie"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-chart-bar"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-exchange-alt"></i> Movement Analysis</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="inventory-settings-unified.html">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Categories Management -->
+        <div class="form-container">
+            <!-- Categories Summary -->
+            <div class="form-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-boxes inv-icon-category"></i> Categories Overview</h2>
+                    <div class="header-actions">
+                        <button class="inv-btn inv-btn-primary"><i class="fas fa-plus"></i> Add Category</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="summary-metrics">
+                        <div class="metric-card">
+                            <h3>Total Categories</h3>
+                            <div class="metric-value">37</div>
+                            <div class="metric-info">5 main categories</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Active Categories</h3>
+                            <div class="metric-value">35</div>
+                            <div class="metric-info">2 inactive</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Used in Products</h3>
+                            <div class="metric-value">28</div>
+                            <div class="metric-info">8 categories unused</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Recently Modified</h3>
+                            <div class="metric-value">3</div>
+                            <div class="metric-info">in the last 30 days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories Tree -->
+            <div class="form-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-sitemap inv-icon-blue"></i> Category Hierarchy</h2>
+                    <div class="header-actions">
+                        <button class="inv-btn inv-btn-outline"><i class="fas fa-expand"></i> Expand All</button>
+                        <button class="inv-btn inv-btn-outline"><i class="fas fa-compress"></i> Collapse All</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="categories-tree">
+                        <ul class="tree-root">
+                            <li class="tree-item expanded">
+                                <div class="tree-item-header">
+                                    <span class="toggle-icon"><i class="fas fa-caret-down"></i></span>
+                                    <span class="category-icon inv-icon inv-icon-blue"><i class="fas fa-industry"></i></span>
+                                    <span class="category-name">Raw Materials</span>
+                                    <span class="category-count">125 products</span>
+                                    <span class="status-indicator status-active">Active</span>
+                                    <div class="tree-actions">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <ul class="tree-children">
+                                    <li class="tree-item">
+                                        <div class="tree-item-header">
+                                            <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                            <span class="category-icon inv-icon inv-icon-purple"><i class="fas fa-cubes"></i></span>
+                                            <span class="category-name">Metals</span>
+                                            <span class="category-count">48 products</span>
+                                            <div class="tree-actions">
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="tree-item expanded">
+                                        <div class="tree-item-header">
+                                            <span class="toggle-icon"><i class="fas fa-caret-down"></i></span>
+                                            <span class="category-icon inv-icon inv-icon-green"><i class="fas fa-vial"></i></span>
+                                            <span class="category-name">Chemicals</span>
+                                            <span class="category-count">35 products</span>
+                                            <div class="tree-actions">
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <ul class="tree-children">
+                                            <li class="tree-item">
+                                                <div class="tree-item-header">
+                                                    <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                                    <span class="category-icon inv-icon inv-icon-blue"><i class="fas fa-flask"></i></span>
+                                                    <span class="category-name">Solvents</span>
+                                                    <span class="category-count">12 products</span>
+                                                    <div class="tree-actions">
+                                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tree-item">
+                                                <div class="tree-item-header">
+                                                    <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                                    <span class="category-icon inv-icon inv-icon-purple"><i class="fas fa-atom"></i></span>
+                                                    <span class="category-name">Reagents</span>
+                                                    <span class="category-count">18 products</span>
+                                                    <div class="tree-actions">
+                                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tree-item">
+                                                <div class="tree-item-header">
+                                                    <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                                    <span class="category-icon inv-icon inv-icon-yellow"><i class="fas fa-spray-can"></i></span>
+                                                    <span class="category-name">Adhesives</span>
+                                                    <span class="category-count">5 products</span>
+                                                    <div class="tree-actions">
+                                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="tree-item">
+                                        <div class="tree-item-header">
+                                            <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                            <span class="category-icon inv-icon inv-icon-green"><i class="fas fa-tree"></i></span>
+                                            <span class="category-name">Lumber</span>
+                                            <span class="category-count">12 products</span>
+                                            <div class="tree-actions">
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="tree-item">
+                                        <div class="tree-item-header">
+                                            <span class="toggle-icon invisible"><i class="fas fa-caret-right"></i></span>
+                                            <span class="category-icon inv-icon inv-icon-blue"><i class="fas fa-tint"></i></span>
+                                            <span class="category-name">Liquids</span>
+                                            <span class="category-count">30 products</span>
+                                            <div class="tree-actions">
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="tree-item">
+                                <div class="tree-item-header">
+                                    <span class="toggle-icon"><i class="fas fa-caret-right"></i></span>
+                                    <span class="category-icon inv-icon inv-icon-yellow"><i class="fas fa-cogs"></i></span>
+                                    <span class="category-name">Components</span>
+                                    <span class="category-count">87 products</span>
+                                    <div class="tree-actions">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="tree-item">
+                                <div class="tree-item-header">
+                                    <span class="toggle-icon"><i class="fas fa-caret-right"></i></span>
+                                    <span class="category-icon inv-icon inv-icon-purple"><i class="fas fa-box-open"></i></span>
+                                    <span class="category-name">Semi-finished Products</span>
+                                    <span class="category-count">42 products</span>
+                                    <div class="tree-actions">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="tree-item">
+                                <div class="tree-item-header">
+                                    <span class="toggle-icon"><i class="fas fa-caret-right"></i></span>
+                                    <span class="category-icon inv-icon inv-icon-blue"><i class="fas fa-box"></i></span>
+                                    <span class="category-name">Finished Products</span>
+                                    <span class="category-count">68 products</span>
+                                    <div class="tree-actions">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="tree-item">
+                                <div class="tree-item-header">
+                                    <span class="toggle-icon"><i class="fas fa-caret-right"></i></span>
+                                    <span class="category-icon inv-icon inv-icon-gray"><i class="fas fa-tools"></i></span>
+                                    <span class="category-name">Tools & Equipment</span>
+                                    <span class="category-count">25 products</span>
+                                    <div class="tree-actions">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add/Edit Category Form -->
+            <div class="form-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-edit inv-icon inv-icon-green"></i> Edit Category</h2>
+                </div>
+                <div class="card-body">
+                    <form class="category-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="text" id="categoryName" value="Chemicals">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryCode">Category Code</label>
+                                <input type="text" id="categoryCode" value="RAW-CHEM">
+                            </div>
+                            <div class="form-group">
+                                <label for="parentCategory">Parent Category</label>
+                                <select id="parentCategory">
+                                    <option value="">-- None (Top Level) --</option>
+                                    <option value="1" selected>Raw Materials</option>
+                                    <option value="2">Components</option>
+                                    <option value="3">Semi-finished Products</option>
+                                    <option value="4">Finished Products</option>
+                                    <option value="5">Tools & Equipment</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categoryIcon">Icon</label>
+                                <select id="categoryIcon">
+                                    <option value="fas fa-box">Box</option>
+                                    <option value="fas fa-cubes">Cubes</option>
+                                    <option value="fas fa-vial" selected>Vial</option>
+                                    <option value="fas fa-flask">Flask</option>
+                                    <option value="fas fa-cogs">Cogs</option>
+                                    <option value="fas fa-tools">Tools</option>
+                                    <option value="fas fa-industry">Industry</option>
+                                    <option value="fas fa-tree">Tree</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryStatus">Status</label>
+                                <select id="categoryStatus">
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="defaultUOM">Default Unit of Measure</label>
+                                <select id="defaultUOM">
+                                    <option value="">-- None --</option>
+                                    <option value="pcs">Piece</option>
+                                    <option value="kg" selected>Kilogram</option>
+                                    <option value="l">Liter</option>
+                                    <option value="m">Meter</option>
+                                    <option value="set">Set</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="categoryDescription">Description</label>
+                                <textarea id="categoryDescription" rows="3">Chemical substances used in manufacturing processes, including solvents, reagents, acids, bases, and adhesives.</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categoryTaxRate">Default Tax Rate (%)</label>
+                                <input type="number" id="categoryTaxRate" value="20" min="0" max="100" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryWarranty">Default Warranty (days)</label>
+                                <input type="number" id="categoryWarranty" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryShelfLife">Default Shelf Life (days)</label>
+                                <input type="number" id="categoryShelfLife" value="365" min="0">
+                            </div>
+                        </div>
+                        <hr>
+                        <h3>Inventory Settings</h3>
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="trackLots" checked>
+                                    Track Lots/Batches
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="trackExpiry" checked>
+                                    Track Expiration Dates
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="requireQC" checked>
+                                    Require Quality Control
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="safetyStock">Default Safety Stock (%)</label>
+                                <input type="number" id="safetyStock" value="15" min="0" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="reorderPoint">Default Reorder Point (%)</label>
+                                <input type="number" id="reorderPoint" value="25" min="0" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="leadTime">Default Lead Time (days)</label>
+                                <input type="number" id="leadTime" value="14" min="0">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="inv-btn inv-btn-primary">Save Changes</button>
+                            <button type="button" class="inv-btn inv-btn-outline">Cancel</button>
+                            <button type="button" class="inv-btn inv-btn-danger" style="margin-left: auto;">Delete Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка, загружена ли страница в iframe
+            const isInIframe = window.self !== window.top;
+            
+            // Если страница загружена в iframe, скрываем лишние элементы
+            if (isInIframe) {
+                // Скрываем сайдбар
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar) sidebar.style.display = 'none';
+                
+                // Скрываем верхнюю панель
+                const topBar = document.querySelector('.top-bar');
+                if (topBar) topBar.style.display = 'none';
+                
+                // Скрываем хедер с заголовком
+                const mainHeader = document.querySelector('.main-header');
+                if (mainHeader) mainHeader.style.display = 'none';
+                
+                // Скрываем навигацию
+                const inventoryNav = document.querySelector('.inventory-nav');
+                if (inventoryNav) inventoryNav.style.display = 'none';
+                
+                // Настраиваем основное содержимое для отображения в iframe
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    mainContent.style.marginLeft = '0';
+                    mainContent.style.padding = '0';
+                }
+                
+                // Удаляем отступы у контейнера форм
+                const formContainer = document.querySelector('.form-container');
+                if (formContainer) {
+                    formContainer.style.padding = '0';
+                }
+            }
+            
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar')?.addEventListener('click', function() {
+                document.querySelector('.sidebar')?.classList.toggle('collapsed');
+                document.querySelector('.main-content')?.classList.toggle('expanded');
+            });
+            
+            // Toggle tree items
+            document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+                icon.addEventListener('click', function() {
+                    const treeItem = this.closest('.tree-item');
+                    treeItem.classList.toggle('expanded');
+                    const iconElement = this.querySelector('i');
+                    if (treeItem.classList.contains('expanded')) {
+                        iconElement.classList.replace('fa-caret-right', 'fa-caret-down');
+                    } else {
+                        iconElement.classList.replace('fa-caret-down', 'fa-caret-right');
+                    }
+                });
+            });
+
+            // Expand/Collapse All buttons
+            document.querySelector('button:has(.fa-expand)')?.addEventListener('click', function() {
+                document.querySelectorAll('.tree-item').forEach(item => {
+                    item.classList.add('expanded');
+                    const toggleIcon = item.querySelector('.toggle-icon i');
+                    if (toggleIcon && toggleIcon.classList.contains('fa-caret-right')) {
+                        toggleIcon.classList.replace('fa-caret-right', 'fa-caret-down');
+                    }
+                });
+            });
+
+            document.querySelector('button:has(.fa-compress)')?.addEventListener('click', function() {
+                document.querySelectorAll('.tree-item').forEach(item => {
+                    if (!item.querySelector('.tree-item-header').parentElement.classList.contains('tree-root')) {
+                        item.classList.remove('expanded');
+                        const toggleIcon = item.querySelector('.toggle-icon i');
+                        if (toggleIcon && toggleIcon.classList.contains('fa-caret-down')) {
+                            toggleIcon.classList.replace('fa-caret-down', 'fa-caret-right');
+                        }
+                    }
+                });
+            });
+
+            // Edit category when clicking edit button
+            document.querySelectorAll('.btn-icon:has(.fa-edit)').forEach(button => {
+                button.addEventListener('click', function() {
+                    const categoryName = this.closest('.tree-item-header').querySelector('.category-name').textContent;
+                    document.querySelector('.card-header h2:has(.fa-edit)')?.scrollIntoView({ behavior: 'smooth' });
+                    // In a real application, you would load the category data here
+                    console.log('Editing category:', categoryName);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

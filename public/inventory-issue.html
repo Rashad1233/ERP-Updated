@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP System - Issue Stock</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="inventory-common.css">
+    <link rel="stylesheet" href="css/inventory-operations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <!-- Products button is hidden in Inventory pages -->
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventory</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="inventory.html"><i class="fas fa-box-open"></i> Products & Materials</a></li>
+                    <li><a href="inventory-movements.html"><i class="fas fa-exchange-alt"></i> Stock Movements</a></li>
+                    <li><a href="inventory-contracts.html"><i class="fas fa-file-contract"></i> Contracts & Purchases</a></li>
+                    <li><a href="inventory-reservations.html"><i class="fas fa-clipboard-list"></i> Reservations & Orders</a></li>
+                    <li><a href="inventory-accounting.html"><i class="fas fa-tasks"></i> Inventory Accounting</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-bag"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-signature"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="quotes.html"><i class="fas fa-file-invoice-dollar"></i> Quotes</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-file-signature"></i> Orders</a></li>
+                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+                    <li><a href="clients.html"><i class="fas fa-users"></i> Clients</a></li>
+                </ul>
+            </li>
+            <!-- Reports button is temporarily hidden -->
+            <li><a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <div class="badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <img src="img/avatar.png" alt="User Avatar">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Issue Stock</h1>
+                <p>Creating a document for issuing goods from the warehouse</p>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="btn-default dropdown-toggle">
+                        <i class="fas fa-file-alt"></i> Reports <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content reports-menu">
+                        <div class="reports-menu-header">
+                            <h3>Available Reports</h3>
+                            <span>Select a report to view</span>
+                        </div>
+                        <div class="reports-menu-items">
+                            <a href="inventory-report-history.html" class="report-item">
+                                <div class="report-icon blue">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Stock Level History</h4>
+                                    <span>Historical stock levels analysis</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-valuation.html" class="report-item">
+                                <div class="report-icon green">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Inventory Valuation</h4>
+                                    <span>Financial valuation of stock</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-movement.html" class="report-item">
+                                <div class="report-icon purple">
+                                    <i class="fas fa-random"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Movement Analysis</h4>
+                                    <span>Stock ins/outs movement patterns</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-lowstock.html" class="report-item">
+                                <div class="report-icon yellow">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Low Stock Report</h4>
+                                    <span>Items below minimum threshold</span>
+                                </div>
+                            </a>
+                            <a href="inventory-report-expiry.html" class="report-item">
+                                <div class="report-icon red">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="report-info">
+                                    <h4>Expiry Report</h4>
+                                    <span>Items nearing expiration date</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-default"><i class="fas fa-print"></i> Print</button>
+                <button class="btn-default"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- Inventory Dropdown Navigation -->
+        <nav class="inventory-nav">
+            <ul class="inventory-menu">
+                <li>
+                    <a href="inventory.html">
+                        <i class="fas fa-box-open"></i>
+                        Products & Materials
+                    </a>
+                </li>
+                <li>
+                    <a href="inventory-movements.html">
+                        <i class="fas fa-exchange-alt"></i>
+                        Stock Movements
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i>
+                        Stock Operations
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu show">
+                        <li><a href="inventory-receive.html"><i class="fas fa-plus-circle"></i> Receive Stock</a></li>
+                        <li class="active"><a href="inventory-issue.html"><i class="fas fa-minus-circle"></i> Issue Stock</a></li>
+                        <li><a href="inventory-transfer.html"><i class="fas fa-random"></i> Transfer Stock</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-count.html"><i class="fas fa-tasks"></i> Stock Count</a></li>
+                        <li><a href="inventory-writeoff.html"><i class="fas fa-trash-alt"></i> Write-off</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="inventory-reservations.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-settings-categories.html"><i class="fas fa-boxes"></i> Categories</a></li>
+                        <li><a href="inventory-settings-locations.html"><i class="fas fa-warehouse"></i> Locations</a></li>
+                        <li><a href="inventory-settings-uom.html"><i class="fas fa-ruler-combined"></i> Units of Measure</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="inventory-settings-general.html"><i class="fas fa-sliders-h"></i> Inventory Settings</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="inventory-report-history.html"><i class="fas fa-chart-line"></i> Stock Level History</a></li>
+                        <li><a href="inventory-report-valuation.html"><i class="fas fa-coins"></i> Inventory Valuation</a></li>
+                        <li><a href="inventory-report-movement.html"><i class="fas fa-random"></i> Movement Analysis</a></li>
+                        <li><a href="inventory-report-lowstock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</a></li>
+                        <li><a href="inventory-report-expiry.html"><i class="fas fa-calendar-times"></i> Expiry Report</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Operations Container -->
+        <div class="operations-container">
+            <!-- Action Section -->
+            <div class="operations-section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-cogs"></i> Actions & Overview</h2>
+                </div>
+                <div class="section-body">
+                    <!-- Action Buttons -->
+                    <div class="action-buttons-container">
+                        <button class="action-button primary"><i class="fas fa-minus-circle"></i> New Issue</button>
+                        <button class="action-button warning"><i class="fas fa-clipboard-list"></i> From Production Order</button>
+                        <button class="action-button info"><i class="fas fa-file-alt"></i> From Sales Order</button>
+                        <button class="action-button secondary"><i class="fas fa-file-export"></i> Export Data</button>
+                    </div>
+
+                    <!-- Inventory Statistics -->
+                    <div class="inventory-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-box-open icon-total"></i>
+                            <div class="stat-info">
+                                <div class="stat-number">56</div>
+                                <div class="stat-label">Total Issues</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-calendar-day icon-onorder"></i>
+                            <div class="stat-info">
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">This Month</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clock icon-low"></i>
+                            <div class="stat-info">
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">Pending Issue</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-industry icon-expired"></i>
+                            <div class="stat-info">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">For Production</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="operations-section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-minus-circle"></i> Issue Information</h2>
+                </div>
+                <div class="section-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="issueNumber">Document Number</label>
+                            <input type="text" id="issueNumber" value="IS-2023-0067" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="issueDate">Issue Date</label>
+                            <input type="date" id="issueDate" value="2023-10-25">
+                        </div>
+                        <div class="form-group">
+                            <label for="issueStatus">Status</label>
+                            <select id="issueStatus">
+                                <option value="draft" selected>Draft</option>
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Storage Location</label>
+                            <select id="location" required>
+                                <option value="">Select storage location</option>
+                                <option value="main" selected>Main Warehouse</option>
+                                <option value="secondary">Secondary Warehouse</option>
+                                <option value="production">Production Warehouse</option>
+                                <option value="receiving">Receiving Area</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issueType">Issue Type</label>
+                            <select id="issueType">
+                                <option value="production" selected>Production</option>
+                                <option value="sales">Sales</option>
+                                <option value="internal">Internal Use</option>
+                                <option value="adjustment">Adjustment</option>
+                                <option value="transfer">Transfer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderReference">Order Reference</label>
+                            <input type="text" id="orderReference" placeholder="Enter related order number" value="MO-2023-0054">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select id="department">
+                                <option value="">Select department</option>
+                                <option value="prod" selected>Production</option>
+                                <option value="rnd">R&D</option>
+                                <option value="maint">Maintenance</option>
+                                <option value="sales">Sales</option>
+                                <option value="admin">Administration</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="responsiblePerson">Issued By</label>
+                            <input type="text" id="responsiblePerson" placeholder="Enter responsible person's name" value="Ivanov I.I.">
+                        </div>
+                        <div class="form-group">
+                            <label for="receiver">Received By</label>
+                            <input type="text" id="receiver" placeholder="Enter receiver's name" value="Petrov P.P.">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" rows="3" placeholder="Enter additional information...">Materials for manufacturing order MO-2023-0054. Issue for production of Widget-X according to manufacturing schedule.</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="operations-section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-boxes"></i> Goods to Issue</h2>
+                    <button class="btn-add"><i class="fas fa-plus"></i> Add Product</button>
+                </div>
+                <div class="section-body">
+                    <div class="table-container">
+                        <table class="data-table items-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%">Product</th>
+                                    <th>Unit</th>
+                                    <th>Available</th>
+                                    <th>Reserved</th>
+                                    <th>Quantity<br>to Issue</th>
+                                    <th>Unit Cost</th>
+                                    <th>Total Cost</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="product-select">
+                                            <option value="">Select product</option>
+                                            <option value="1" selected>Aluminum Profile A1001</option>
+                                            <option value="2">Metal Fasteners M100-2</option>
+                                            <option value="3">Sheet Steel S355</option>
+                                            <option value="4">SKF 6205 Bearings</option>
+                                        </select>
+                                    </td>
+                                    <td>pcs</td>
+                                    <td>250</td>
+                                    <td>50</td>
+                                    <td><input type="number" value="30" min="1" max="200"></td>
+                                    <td>125,00 ₽</td>
+                                    <td>3 750,00 ₽</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-action btn-view" title="View History"><i class="fas fa-history"></i></button>
+                                            <button class="btn-action btn-delete" title="Remove"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="product-select">
+                                            <option value="">Select product</option>
+                                            <option value="1">Aluminum Profile A1001</option>
+                                            <option value="2" selected>Metal Fasteners M100-2</option>
+                                            <option value="3">Sheet Steel S355</option>
+                                            <option value="4">SKF 6205 Bearings</option>
+                                        </select>
+                                    </td>
+                                    <td>kg</td>
+                                    <td>500</td>
+                                    <td>100</td>
+                                    <td><input type="number" value="50" min="1" max="400"></td>
+                                    <td>350,00 ₽</td>
+                                    <td>17 500,00 ₽</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-action btn-view" title="View History"><i class="fas fa-history"></i></button>
+                                            <button class="btn-action btn-delete" title="Remove"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="product-select">
+                                            <option value="">Select product</option>
+                                            <option value="1">Aluminum Profile A1001</option>
+                                            <option value="2">Metal Fasteners M100-2</option>
+                                            <option value="3">Sheet Steel S355</option>
+                                            <option value="4" selected>SKF 6205 Bearings</option>
+                                        </select>
+                                    </td>
+                                    <td>pcs</td>
+                                    <td>120</td>
+                                    <td>20</td>
+                                    <td><input type="number" value="15" min="1" max="100"></td>
+                                    <td>450,00 ₽</td>
+                                    <td>6 750,00 ₽</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-action btn-view" title="View History"><i class="fas fa-history"></i></button>
+                                            <button class="btn-action btn-delete" title="Remove"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="add-new-row">
+                                    <td colspan="8">
+                                        <button class="btn-add-row"><i class="fas fa-plus"></i> Add Row</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-right"><strong>Total:</strong></td>
+                                    <td><strong>28 000,00 ₽</strong></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounting Section -->
+            <div class="operations-section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-calculator"></i> Accounting Information</h2>
+                </div>
+                <div class="section-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="costCenter">Cost Center</label>
+                            <select id="costCenter">
+                                <option value="">Select cost center</option>
+                                <option value="production" selected>Production</option>
+                                <option value="logistics">Logistics</option>
+                                <option value="sales">Sales</option>
+                                <option value="administration">Administration</option>
+                                <option value="general">General Expenses</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="glAccount">GL Account</label>
+                            <select id="glAccount">
+                                <option value="">Select GL account</option>
+                                <option value="20" selected>20 - Production Costs</option>
+                                <option value="25">25 - General Production Costs</option>
+                                <option value="26">26 - General Business Expenses</option>
+                                <option value="44">44 - Sales Expenses</option>
+                                <option value="91">91 - Other Income and Expenses</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="project">Project</label>
+                            <select id="project">
+                                <option value="">Select project</option>
+                                <option value="1" selected>Widget-X Development</option>
+                                <option value="2">Production Line Upgrade</option>
+                                <option value="3">New Product Launch</option>
+                                <option value="4">General Operations</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="budgetCode">Budget Code</label>
+                            <input type="text" id="budgetCode" placeholder="Enter budget code" value="BG2023-PROD-015">
+                        </div>
+                        <div class="form-group">
+                            <label for="approver">Approved By</label>
+                            <input type="text" id="approver" placeholder="Enter approver's name" value="Sidorov S.S.">
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <select id="priority">
+                                <option value="high">High</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Footer -->
+            <div class="operations-section">
+                <div class="section-body">
+                    <div class="form-actions">
+                        <button class="btn-primary"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn-success"><i class="fas fa-check"></i> Complete Issue</button>
+                        <button class="btn-info"><i class="fas fa-print"></i> Print Issue Note</button>
+                        <button class="btn-default"><i class="fas fa-times"></i> Cancel</button>
+                        <button class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for sidebar toggle
+            document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('collapsed');
+            });
+        });
+    </script>
+</body>
+</html> 

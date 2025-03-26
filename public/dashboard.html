@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active"><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>System Dashboard</h1>
+                <p>Overview of your business performance and metrics</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">5</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="date-filter">
+            <div class="date-range">
+                <div class="date-input-group">
+                    <label for="start-date">From:</label>
+                    <input type="date" id="start-date" value="2024-01-01">
+                </div>
+                <div class="date-input-group">
+                    <label for="end-date">To:</label>
+                    <input type="date" id="end-date" value="2024-12-31">
+                </div>
+                <button class="filter-button primary">Apply</button>
+                <button class="filter-button secondary">Reset</button>
+            </div>
+            <div class="quick-filters">
+                <button class="quick-filter active">YTD</button>
+                <button class="quick-filter">Last Quarter</button>
+                <button class="quick-filter">Last Month</button>
+                <button class="quick-filter">Last Week</button>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="metrics-panel">
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="metric-card-title">Total Products</div>
+                </div>
+                <div class="metric-card-value">1,428</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 7% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="metric-card-title">Active Orders</div>
+                </div>
+                <div class="metric-card-value">86</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 12% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="metric-card-title">Total Clients</div>
+                </div>
+                <div class="metric-card-value">347</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 5% from previous period
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <div class="metric-card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="metric-card-title">Total Revenue</div>
+                </div>
+                <div class="metric-card-value">$2,856,430</div>
+                <div class="metric-card-trend positive">
+                    <i class="fas fa-arrow-up"></i> 8% from previous period
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Revenue by Category</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                        <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="revenueByCategoryChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Monthly Revenue Trend</h3>
+                    <div class="chart-actions">
+                        <button class="chart-action-btn"><i class="fas fa-download"></i></button>
+                        <button class="chart-action-btn"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+                <div class="chart-body">
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Panels -->
+        <div class="activity-panels">
+            <div class="panel inventory-status">
+                <div class="panel-header">
+                    <h3>Inventory Status</h3>
+                    <a href="inventory.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="status-indicators">
+                        <div class="status-indicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="indicator-details">
+                                <div class="indicator-title">Low Stock Items</div>
+                                <div class="indicator-value">12 items</div>
+                            </div>
+                            <a href="inventory.html?filter=low" class="indicator-action">
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <div class="indicator-details">
+                                <div class="indicator-title">Out of Stock</div>
+                                <div class="indicator-value">5 items</div>
+                            </div>
+                            <a href="inventory.html?filter=out" class="indicator-action">
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Min Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Keyboard Mechanical K95</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td><span class="status-badge status-pending">Low Stock</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit-btn" title="Order"><i class="fas fa-shopping-cart"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Monitor 27" Ultra HD</td>
+                                <td>0</td>
+                                <td>5</td>
+                                <td><span class="status-badge status-rejected">Out of Stock</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit-btn" title="Order"><i class="fas fa-shopping-cart"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Wireless Mouse M305</td>
+                                <td>8</td>
+                                <td>15</td>
+                                <td><span class="status-badge status-pending">Low Stock</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit-btn" title="Order"><i class="fas fa-shopping-cart"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="panel recent-orders">
+                <div class="panel-header">
+                    <h3>Recent Orders</h3>
+                    <a href="sales-orders.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="panel-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ORD-2023-0458</td>
+                                <td>TechnoProServe Inc.</td>
+                                <td>$24,500</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ORD-2023-0457</td>
+                                <td>Smirnov Enterprises</td>
+                                <td>$8,700</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ORD-2023-0456</td>
+                                <td>Construction Materials Ltd</td>
+                                <td>$36,200</td>
+                                <td><span class="status-badge status-approved">Shipped</span></td>
+                                <td>
+                                    <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Charts initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue by Category Chart
+            const ctxCategory = document.getElementById('revenueByCategoryChart').getContext('2d');
+            new Chart(ctxCategory, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hardware', 'Software', 'Services', 'Accessories', 'Other'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: [
+                            '#4e73df',
+                            '#1cc88a',
+                            '#36b9cc',
+                            '#f6c23e',
+                            '#e74a3b'
+                        ],
+                        hoverBackgroundColor: [
+                            '#2e59d9',
+                            '#17a673',
+                            '#2c9faf',
+                            '#dda20a',
+                            '#be2617'
+                        ],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    cutoutPercentage: 70,
+                }
+            });
+
+            // Monthly Revenue Chart
+            const ctxMonthly = document.getElementById('monthlyRevenueChart').getContext('2d');
+            new Chart(ctxMonthly, {
+                type: 'line',
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    datasets: [{
+                        label: "Revenue",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: [215000, 240000, 325000, 190000, 245000, 280000, 320000, 275000, 310000, 285000, 325000, 350000],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 12
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                callback: function(value) {
+                                    return '$' + Number(value).toLocaleString();
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        intersect: false,
+                        mode: 'index',
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': $' + Number(tooltipItem.yLabel).toLocaleString();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

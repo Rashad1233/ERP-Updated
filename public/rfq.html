@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request for Quotation | ERP System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/procurement-common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/sidebar.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>ERP System</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> Inventory</a></li>
+            <li class="has-submenu active">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="procurement.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="requisitions.html"><i class="fas fa-file-alt"></i> Purchase Requisition</a></li>
+                    <li class="active"><a href="rfq.html"><i class="fas fa-file-invoice"></i> Request for Quotation</a></li>
+                    <li><a href="purchase-orders.html"><i class="fas fa-shopping-basket"></i> Purchase Order</a></li>
+                    <li><a href="suppliers.html"><i class="fas fa-truck"></i> Suppliers</a></li>
+                    <li><a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="#" class="submenu-toggle">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Sales</span>
+                    <i class="fas fa-chevron-down submenu-icon"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="sales.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="supplier-quote-request.html"><i class="fas fa-file-import"></i> Request to Supplier to quote</a></li>
+                    <li><a href="quotations.html"><i class="fas fa-file-invoice-dollar"></i> Quote to Customer</a></li>
+                    <li><a href="sales-orders.html"><i class="fas fa-shopping-bag"></i> Sales Order</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="sales-contracts.html"><i class="fas fa-file-contract"></i> Sales contracts</a></li>
+                </ul>
+            </li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="header-title">
+                <h1>Request for Quotation</h1>
+                <p>Manage RFQs and supplier quotations</p>
+            </div>
+            <div class="user-info">
+                <div class="language-selector">
+                    <select id="language-switch">
+                        <option value="en" selected>English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpg" alt="User Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub Navigation -->
+        <div class="sub-nav" style="display: none;">
+            <ul>
+                <li><a href="procurement.html">Dashboard</a></li>
+                <li><a href="requisitions.html">Requisitions</a></li>
+                <li class="active"><a href="rfq.html">RFQ</a></li>
+                <li><a href="purchase-orders.html">Purchase Orders</a></li>
+                <li><a href="contracts.html">Contracts</a></li>
+            </ul>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="statistics-panel">
+            <div class="stat-card pending">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="stat-card-title">Draft</div>
+                </div>
+                <div class="stat-card-value">5</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-card-title">Open</div>
+                </div>
+                <div class="stat-card-value">12</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                    <div class="stat-card-title">Closed</div>
+                </div>
+                <div class="stat-card-value">28</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-card-title">Suppliers Invited</div>
+                </div>
+                <div class="stat-card-value">42</div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search RFQs...">
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Status:</div>
+                <select class="filter-control">
+                    <option value="all">All</option>
+                    <option value="draft">Draft</option>
+                    <option value="open">Open</option>
+                    <option value="pending">Pending Responses</option>
+                    <option value="under-review">Under Review</option>
+                    <option value="awarded">Awarded</option>
+                    <option value="closed">Closed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Requisition:</div>
+                <select class="filter-control">
+                    <option value="all">All</option>
+                    <option value="REQ-2023-001">REQ-2023-001</option>
+                    <option value="REQ-2023-002">REQ-2023-002</option>
+                    <option value="REQ-2023-004">REQ-2023-004</option>
+                    <option value="REQ-2023-005">REQ-2023-005</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Date From:</div>
+                <input type="date" class="filter-date-input">
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Date To:</div>
+                <input type="date" class="filter-date-input">
+            </div>
+            <button class="filter-button primary">Apply</button>
+            <button class="filter-button secondary">Reset</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons-container">
+            <button class="action-button primary" id="newRfqBtn">
+                <i class="fas fa-plus"></i> Create New RFQ
+            </button>
+            <button class="action-button secondary" id="exportBtn">
+                <i class="fas fa-file-export"></i> Export
+            </button>
+        </div>
+
+        <!-- RFQ Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>RFQ ID</th>
+                        <th>Title</th>
+                        <th>Date Created</th>
+                        <th>Due Date</th>
+                        <th>Suppliers</th>
+                        <th>Status</th>
+                        <th>Items</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RFQ-2023-028</td>
+                        <td>Server Hardware Upgrade</td>
+                        <td>2023-03-21</td>
+                        <td>2023-04-05</td>
+                        <td>5</td>
+                        <td><span class="status-badge status-pending">Pending Responses</span></td>
+                        <td>8</td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RFQ-2023-027</td>
+                        <td>Office Supplies Q2</td>
+                        <td>2023-03-18</td>
+                        <td>2023-03-31</td>
+                        <td>3</td>
+                        <td><span class="status-badge status-approved">Under Review</span></td>
+                        <td>12</td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn compare-btn" title="Compare"><i class="fas fa-columns"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RFQ-2023-026</td>
+                        <td>Marketing Materials</td>
+                        <td>2023-03-15</td>
+                        <td>2023-03-25</td>
+                        <td>4</td>
+                        <td><span class="status-badge status-completed">Awarded</span></td>
+                        <td>5</td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn po-btn" title="View PO"><i class="fas fa-shopping-cart"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RFQ-2023-025</td>
+                        <td>Software Licenses</td>
+                        <td>2023-03-10</td>
+                        <td>2023-03-20</td>
+                        <td>2</td>
+                        <td><span class="status-badge status-rejected">Cancelled</span></td>
+                        <td>1</td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RFQ-2023-024</td>
+                        <td>Computer Equipment</td>
+                        <td>2023-03-08</td>
+                        <td>2023-03-18</td>
+                        <td>6</td>
+                        <td><span class="status-badge status-completed">Closed</span></td>
+                        <td>10</td>
+                        <td class="action-buttons">
+                            <button class="action-btn view-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn po-btn" title="View PO"><i class="fas fa-shopping-cart"></i></button>
+                            <button class="action-btn pdf-btn" title="PDF"><i class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button" id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- New RFQ Modal -->
+    <div class="modal" id="rfqModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>New Request for Quotation</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="rfqForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rfqTitle">Title</label>
+                            <input type="text" id="rfqTitle" placeholder="Enter RFQ title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="requisition">Based on Requisition</label>
+                            <select id="requisition">
+                                <option value="">Select a requisition (optional)</option>
+                                <option value="REQ-2023-001">REQ-2023-001 - IT Hardware</option>
+                                <option value="REQ-2023-002">REQ-2023-002 - Marketing Materials</option>
+                                <option value="REQ-2023-004">REQ-2023-004 - Office Supplies</option>
+                                <option value="REQ-2023-005">REQ-2023-005 - Software Licenses</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="createDate">Created Date</label>
+                            <input type="date" id="createDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dueDate">Response Due Date</label>
+                            <input type="date" id="dueDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select id="department" required>
+                                <option value="">Select Department</option>
+                                <option value="it">IT</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="finance">Finance</option>
+                                <option value="hr">Human Resources</option>
+                                <option value="operations">Operations</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPerson">Contact Person</label>
+                            <input type="text" id="contactPerson" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rfqDescription">Description</label>
+                        <textarea id="rfqDescription" rows="3" required></textarea>
+                    </div>
+                    
+                    <h3>Items</h3>
+                    <div class="items-container" id="itemsContainer">
+                        <div class="item-row">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" name="description[]" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="quantity[]" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <select name="unit[]">
+                                    <option value="each">Each</option>
+                                    <option value="box">Box</option>
+                                    <option value="kg">Kg</option>
+                                    <option value="liter">Liter</option>
+                                    <option value="meter">Meter</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Required Date</label>
+                                <input type="date" name="requiredDate[]" required>
+                            </div>
+                            <div class="form-group item-actions">
+                                <button type="button" class="btn-icon remove-item"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions item-actions">
+                        <button type="button" id="addItemBtn" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+                    
+                    <h3>Suppliers</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th width="30px"><input type="checkbox" id="selectAllSuppliers"></th>
+                                    <th>Supplier</th>
+                                    <th>Category</th>
+                                    <th>Email</th>
+                                    <th>Contact Person</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" name="suppliers[]" value="1"></td>
+                                    <td>Tech Solutions Inc.</td>
+                                    <td>Hardware</td>
+                                    <td>procurement@techsolutions.com</td>
+                                    <td>John Miller</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="suppliers[]" value="2"></td>
+                                    <td>Office Supply Co.</td>
+                                    <td>Office Supplies</td>
+                                    <td>sales@officesupply.com</td>
+                                    <td>Sarah Johnson</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="suppliers[]" value="3"></td>
+                                    <td>Software Solutions Ltd</td>
+                                    <td>Software</td>
+                                    <td>quotes@softwaresolutions.com</td>
+                                    <td>Michael Brown</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="suppliers[]" value="4"></td>
+                                    <td>Global Logistics Partners</td>
+                                    <td>Services</td>
+                                    <td>info@globallogistics.com</td>
+                                    <td>Emily Davis</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="terms">Terms and Conditions</label>
+                            <textarea id="terms" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="attachments">Attachments</label>
+                            <input type="file" id="attachments" multiple>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelRfqBtn" class="btn-secondary">Cancel</button>
+                        <button type="button" id="saveAsDraftBtn" class="btn-secondary">Save as Draft</button>
+                        <button type="submit" class="btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View RFQ Modal -->
+    <div class="modal" id="viewRFQModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>RFQ Details</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="rfqDetailsContent">
+                <!-- RFQ details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeViewBtn">Close</button>
+                <button class="btn-primary" id="editViewBtn">Edit</button>
+                <button class="btn-success" id="awardBtn">Award</button>
+                <button class="btn-danger" id="cancelRfqViewBtn">Cancel RFQ</button>
+                <button class="btn-secondary" id="printBtn"><i class="fas fa-print"></i> Print</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compare Quotes Modal -->
+    <div class="modal" id="compareQuotesModal">
+        <div class="modal-content modal-xl">
+            <div class="modal-header">
+                <h2>Compare Supplier Quotes</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="compareQuotesContent">
+                <!-- Comparison content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeCompareBtn">Close</button>
+                <button class="btn-success" id="selectSupplierBtn">Select Supplier</button>
+                <button class="btn-secondary" id="exportComparisonBtn"><i class="fas fa-file-export"></i> Export</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/rfq.js"></script>
+</body>
+</html> 
